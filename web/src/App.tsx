@@ -7,6 +7,7 @@ import StoryDetail from './pages/StoryDetail'
 
 export default function App() {
   const [page, setPage] = useState<Page>({ type: 'quick-review' })
+  const [menuOpen, setMenuOpen] = useState(false)
 
   const stories = getStories()
   const companies = getCompanyResearch()
@@ -33,16 +34,29 @@ export default function App() {
     return true
   }
 
+  function navigate(p: Page) {
+    setPage(p)
+    setMenuOpen(false)
+  }
+
   return (
     <div className="app">
-      <aside className="sidebar">
-        <div className="sidebar-header" onClick={() => setPage({ type: 'quick-review' })}>
+      <button
+        className="mobile-menu-btn"
+        onClick={() => setMenuOpen(!menuOpen)}
+        aria-label="Toggle menu"
+      >
+        {menuOpen ? '✕' : '☰'}
+      </button>
+      {menuOpen && <div className="mobile-overlay" onClick={() => setMenuOpen(false)} />}
+      <aside className={`sidebar ${menuOpen ? 'sidebar-open' : ''}`}>
+        <div className="sidebar-header" onClick={() => navigate({ type: 'quick-review' })}>
           <h1 className="sidebar-title">Interview Prep<br />Tutor</h1>
         </div>
         <nav className="sidebar-nav">
           <button
             className={`nav-item ${isActive('quick-review') ? 'active' : ''}`}
-            onClick={() => setPage({ type: 'quick-review' })}
+            onClick={() => navigate({ type: 'quick-review' })}
           >
             Quick Review
           </button>
@@ -54,7 +68,7 @@ export default function App() {
                 <button
                   key={c.slug}
                   className={`nav-item nav-item-sub ${isActive('company', c.slug) ? 'active' : ''}`}
-                  onClick={() => setPage({ type: 'company', slug: c.slug })}
+                  onClick={() => navigate({ type: 'company', slug: c.slug })}
                 >
                   {c.name}
                 </button>
@@ -69,7 +83,7 @@ export default function App() {
                 <button
                   key={s.slug}
                   className={`nav-item nav-item-sub ${isActive('story', s.slug) ? 'active' : ''}`}
-                  onClick={() => setPage({ type: 'story', slug: s.slug })}
+                  onClick={() => navigate({ type: 'story', slug: s.slug })}
                 >
                   {s.name}
                 </button>
