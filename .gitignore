@@ -3,3 +3,4 @@ web/dist/
 .DS_Store
 pitch/companies/
 mock_sessions/
+.gstack/
