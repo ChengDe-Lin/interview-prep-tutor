@@ -22,9 +22,10 @@
 
 | 公司 | TC 潛力 (SGD) | 面試風格 | 備註 |
 |------|---------------|----------|------|
-| Shopee | 170-300K | LC + SD | 流程最快 |
 | Airwallex | 170-230K + equity | Coding + Fintech SD | 積極擴招 |
 | OKX | 156-264K | SD + AI infra | MAS licensed, AI team |
+
+> ~~Shopee~~ 已移除：薪資 20-30% 低於市場，WLB 評分最低，SE 股票跌 59%。研究顯示用我們的時間不划算，warmup 功能可用其他公司替代。
 
 ```
 投遞：4/14
@@ -61,11 +62,14 @@ Onsite：5/12 — 5/23
 | 公司 | TC 潛力 (SGD) | 面試風格 | 備註 |
 |------|---------------|----------|------|
 | ByteDance/TikTok | 220-350K | LC 偏難 + SD + BQ | 最重要練手 |
-| Amazon SDE III | 280K | LP 故事 + LC + SD | FAANG 格式對標 |
-| Stripe | 235K+ | SD heavy + coding | System design 最重 |
-| Uber | 250-350K (est.) | LC + SD | APAC HQ |
-| Nvidia | negotiate up | LC + SD + AI domain | AI 名聲 |
-| Palantir | 180-250K | 實務 coding + case study | FDE 風格，練 OpenAI |
+| Amazon SDE III | 280K | LP 故事 + LC + SD | 要 team-by-team 投，避開 DC ops/DevRel |
+| Stripe | 235K+ | SD heavy + coding | System design 最重；50%+ in-office |
+| Palantir | 180-250K | 實務 coding + case study | FDSE-only，練 OpenAI FDE 格式 |
+| **HRT**（bonus） | **450K+** | **LC Hard + CS fundamentals + C++/Python** | **隨緣投官網 Python senior 職缺；不專門準備** |
+
+> **移除**：
+> - ~~Uber~~：2020 關閉新加坡 engineering 辦公室，零 SWE
+> - ~~Nvidia~~：SG 幾乎全是 Solutions Architect / DevRel / Research，無 product SWE
 
 ```
 投遞：4/28
@@ -83,10 +87,12 @@ Onsite：5/19 — 5/30
 |------|---------------|----------|------|
 | Google | 255-448K | LC + SD + BQ, Agent Infra 職缺 | 最佳 skill match |
 | Meta | 384K median | LC Hard + SD | SG 最高薪 |
-| Apple | 251-335K | LC + SD + BQ + domain | Dream company |
-| Netflix | 200-350K+ | SD + culture fit | 全 cash，頂級名聲 |
-| Coinbase IC5 | 348K | FAANG-style | Crypto 最佳名聲 |
-| **OpenAI FDE** | **FAANG +30-50% + RSU** | **SD + LLM depth + project deep dive + behavioral** | **4/28 投遞（流程 ~31 天，提前一週）** |
+| Apple | 251-335K | LC + SD + BQ + domain | Dream company；SG 有 Neural Engine / camera firmware / video 真 product team |
+| Coinbase IC5 | 348K | FAANG-style | Crypto 最佳名聲；SG 有 Trading + Consumer Foundations |
+| **OpenAI FDE** | **FAANG +30-50% + RSU** | **SD + LLM depth + project deep dive + behavioral** | **Customer-embedded engineering，不是 core model/product；4/28 投遞（流程 ~31 天，提前一週）** |
+
+> **移除**：
+> - ~~Netflix~~：SG 只有 "Partner Engineering"，職缺 description 自己說 "not a traditional coding-heavy role"。核心 product SWE 在 LA。
 
 ```
 OpenAI 投遞：4/28（流程較長）
@@ -139,7 +145,7 @@ Wave 2 onsites + Wave 3 phone screens + Wave 4 phone screens 重疊
 應對策略：
 - 主動告知 recruiter 你的 availability，大多可配合
 - 優先級：**Dream phone screen > 練手 onsite > 練手 phone screen**
-- Visa/Mastercard/Nvidia 排程最有彈性，撞車時優先推後
+- Visa/Mastercard 排程最有彈性，撞車時優先推後
 
 ---
 
@@ -155,27 +161,42 @@ Wave 2 onsites + Wave 3 phone screens + Wave 4 phone screens 重疊
 
 ---
 
-## 公司總覽（20 家，按投遞順序）
+## 公司總覽（16 家 + 1 bonus，按投遞順序）
 
 | # | 公司 | Wave | 投遞 | TC 潛力 (SGD) | 梯隊 |
 |---|------|------|------|---------------|------|
-| 1 | Shopee | W1 | 4/14 | 170-300K | 暖身 |
-| 2 | Airwallex | W1 | 4/14 | 170-230K + equity | 暖身 |
-| 3 | OKX | W1 | 4/14 | 156-264K | 暖身 |
-| 4 | Grab | W2 | 4/21 | 248-329K | 信心 |
-| 5 | Microsoft | W2 | 4/21 | 220-330K | 信心 |
-| 6 | Databricks | W2 | 4/21 | 250-350K + equity | 信心 |
-| 7 | Visa | W2 | 4/21 | negotiate up | 信心 |
-| 8 | Mastercard | W2 | 4/21 | negotiate up | 信心 |
-| 9 | ByteDance | W3 | 4/28 | 220-350K | 重要練手 |
-| 10 | Amazon | W3 | 4/28 | 280K | 重要練手 |
-| 11 | Stripe | W3 | 4/28 | 235K+ | 重要練手 |
-| 12 | Uber | W3 | 4/28 | 250-350K (est.) | 重要練手 |
-| 13 | Nvidia | W3 | 4/28 | negotiate up | 重要練手 |
-| 14 | Palantir | W3 | 4/28 | 180-250K | 重要練手 |
-| 15 | OpenAI FDE | W4 | 4/28 | FAANG +30-50% | Dream ⭐ |
-| 16 | Google | W4 | 5/5 | 255-448K | Dream ⭐ |
-| 17 | Meta | W4 | 5/5 | 384K | Dream ⭐ |
-| 18 | Apple | W4 | 5/5 | 251-335K | Dream ⭐ |
-| 19 | Netflix | W4 | 5/5 | 200-350K+ | Dream ⭐ |
-| 20 | Coinbase | W4 | 5/5 | 348K | Dream ⭐ |
+| 1 | Airwallex | W1 | 4/14 | 170-230K + equity | 暖身 |
+| 2 | OKX | W1 | 4/14 | 156-264K | 暖身 |
+| 3 | Grab | W2 | 4/21 | 248-329K | 信心 |
+| 4 | Microsoft | W2 | 4/21 | 220-330K | 信心（有限 SWE，挑 team）|
+| 5 | Databricks | W2 | 4/21 | 250-350K + equity | 信心 |
+| 6 | Visa | W2 | 4/21 | negotiate up | 信心 |
+| 7 | Mastercard | W2 | 4/21 | negotiate up | 信心 |
+| 8 | ByteDance | W3 | 4/28 | 220-350K | 重要練手 |
+| 9 | Amazon | W3 | 4/28 | 280K | 重要練手（挑 team）|
+| 10 | Stripe | W3 | 4/28 | 235K+ | 重要練手 |
+| 11 | Palantir | W3 | 4/28 | 180-250K | 重要練手（FDSE）|
+| 12 | **HRT**（bonus） | W3 | 4/28 | **450K+** | **隨緣，不準備** |
+| 13 | OpenAI FDE | W4 | 4/28 | FAANG +30-50% | Dream ⭐ |
+| 14 | Google | W4 | 5/5 | 255-448K | Dream ⭐ |
+| 15 | Meta | W4 | 5/5 | 384K | Dream ⭐ |
+| 16 | Apple | W4 | 5/5 | 251-335K | Dream ⭐ |
+| 17 | Coinbase | W4 | 5/5 | 348K | Dream ⭐ |
+
+## 🗑️ 已移除（無新加坡 product engineering）
+
+| 公司 | 原因 |
+|------|------|
+| Shopee | 薪資 20-30% 低於市場，WLB 最低，股價跌 59%，時間成本不划算 |
+| Uber | 2020 關閉 SG 辦公室，零 engineering |
+| Nvidia | SG 幾乎全是 Solutions Architect / DevRel，無 product SWE |
+| Netflix | SG 只有 Partner Engineering，核心 SWE 在 LA |
+
+## ⚠️ 值得注意的特殊性質
+
+| 公司 | 特殊性質 |
+|------|---------|
+| **OpenAI** | SG 只有 Forward Deployed SWE（customer-embedded），不是 core model/product。薪水仍頂級 |
+| **Palantir** | SG 只有 FDSE（Deltas），客戶端客製化 Foundry/Gotham |
+| **Microsoft / Amazon** | 有 SWE 但 team-by-team 挑，避開 DC ops / DevRel / sales engineering |
+| **HRT** | 極高薪但面試 bar 頂尖，C++ 基礎是隱性要求。不花額外準備時間 |

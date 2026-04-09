@@ -6,7 +6,7 @@
 
 **[Hook]**
 
-Hello, this is ChengDe. I'm a software engineer who builds platforms and then makes them intelligent. Over the last four years, I've been doing exactly that for a system widely used across hospitals — first building its core infrastructure, and now leading its AI transformation.
+Hi, I'm ChengDe. I'm a senior software engineer working on a clinical platform used in hospitals across Taiwan. My focus has been on two things: making the platform modular enough to scale, and then making it smart enough that non-engineers can build on it.
 
 **[Experience + Credibility]**
 
@@ -26,7 +26,7 @@ That's a quick introduction about me. I'd love to dive deeper into any of these 
 
 ## Key Talking Points
 
-- Hook: 蓋平台 → 讓它變聰明，四年內完成兩階段
+- Hook: 臨床平台 + 兩個目標：modular enough to scale → smart enough for non-engineers
 - Credibility: NTU 第一名、2 年升 Senior（平均 4-5 年）、同儕投票獎、AI seminar impact
 - Platform: micro-frontend 架構，complexity 大幅降低，delivery 翻倍，兩個專利
 - AI: designer/PM 可以 vibe-code widgets，省 75% iteration effort
@@ -43,3 +43,4 @@ That's a quick introduction about me. I'd love to dive deeper into any of these 
 |------|---------|
 | 2026-03-22 | v1: 初版通用 pitch，包含 Hook / Credibility / Platform / AI 結構 |
 | 2026-03-22 | v2: 同步 Apple 版修改：精簡用詞、加 system complexity、專利改自然語氣、移除 Why Here placeholder |
+| 2026-04-05 | v3: Hook 重寫 — 去掉重複資訊，改為「兩個目標」框架（modular + smart），不提公司名 |
