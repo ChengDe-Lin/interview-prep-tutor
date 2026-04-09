@@ -46,6 +46,7 @@ Onsite：5/5 — 5/16               ← 回 SG 後
 | Databricks | 250-350K + equity | Coding + SD + ML depth | ML OSS role，強推 |
 | Visa | negotiate up | 標準 + domain | APAC tech hub |
 | Mastercard | negotiate up | 標準 + domain | APAC HQ + AI Center |
+| **Wise** | **170-220K (est.)** | **Coding + fintech SD + BQ** | **Senior SWE I Java 活躍招募；好 WLB 名聲** |
 
 ```
 投遞：4/21
@@ -66,6 +67,7 @@ Onsite：5/12 — 5/23
 | Stripe | 235K+ | SD heavy + coding | System design 最重；50%+ in-office |
 | Palantir | 180-250K | 實務 coding + case study | FDSE-only，練 OpenAI FDE 格式 |
 | **HRT**（bonus） | **450K+** | **LC Hard + CS fundamentals + C++/Python** | **隨緣投官網 Python senior 職缺；不專門準備** |
+| **Jane Street**（bonus） | **500K+** | **極硬 FP + CS fundamentals + behavioral** | **OCaml/Python，他們會教；跟 HRT 同類，隨緣投** |
 
 > **移除**：
 > - ~~Uber~~：2020 關閉新加坡 engineering 辦公室，零 SWE
@@ -161,7 +163,7 @@ Wave 2 onsites + Wave 3 phone screens + Wave 4 phone screens 重疊
 
 ---
 
-## 公司總覽（16 家 + 1 bonus，按投遞順序）
+## 公司總覽（18 家 + 2 bonus，按投遞順序）
 
 | # | 公司 | Wave | 投遞 | TC 潛力 (SGD) | 梯隊 |
 |---|------|------|------|---------------|------|
@@ -172,16 +174,18 @@ Wave 2 onsites + Wave 3 phone screens + Wave 4 phone screens 重疊
 | 5 | Databricks | W2 | 4/21 | 250-350K + equity | 信心 |
 | 6 | Visa | W2 | 4/21 | negotiate up | 信心 |
 | 7 | Mastercard | W2 | 4/21 | negotiate up | 信心 |
-| 8 | ByteDance | W3 | 4/28 | 220-350K | 重要練手 |
-| 9 | Amazon | W3 | 4/28 | 280K | 重要練手（挑 team）|
-| 10 | Stripe | W3 | 4/28 | 235K+ | 重要練手 |
-| 11 | Palantir | W3 | 4/28 | 180-250K | 重要練手（FDSE）|
-| 12 | **HRT**（bonus） | W3 | 4/28 | **450K+** | **隨緣，不準備** |
-| 13 | OpenAI FDE | W4 | 4/28 | FAANG +30-50% | Dream ⭐ |
-| 14 | Google | W4 | 5/5 | 255-448K | Dream ⭐ |
-| 15 | Meta | W4 | 5/5 | 384K | Dream ⭐ |
-| 16 | Apple | W4 | 5/5 | 251-335K | Dream ⭐ |
-| 17 | Coinbase | W4 | 5/5 | 348K | Dream ⭐ |
+| 8 | **Wise** | W2 | 4/21 | **170-220K (est.)** | **信心** |
+| 9 | ByteDance | W3 | 4/28 | 220-350K | 重要練手 |
+| 10 | Amazon | W3 | 4/28 | 280K | 重要練手（挑 team）|
+| 11 | Stripe | W3 | 4/28 | 235K+ | 重要練手 |
+| 12 | Palantir | W3 | 4/28 | 180-250K | 重要練手（FDSE）|
+| 13 | **HRT**（bonus） | W3 | 4/28 | **450K+** | **隨緣，不準備** |
+| 14 | **Jane Street**（bonus） | W3 | 4/28 | **500K+** | **隨緣，不準備** |
+| 15 | OpenAI FDE | W4 | 4/28 | FAANG +30-50% | Dream ⭐ |
+| 16 | Google | W4 | 5/5 | 255-448K | Dream ⭐ |
+| 17 | Meta | W4 | 5/5 | 384K | Dream ⭐ |
+| 18 | Apple | W4 | 5/5 | 251-335K | Dream ⭐ |
+| 19 | Coinbase | W4 | 5/5 | 348K | Dream ⭐ |
 
 ## 🗑️ 已移除（無新加坡 product engineering）
 
@@ -200,3 +204,4 @@ Wave 2 onsites + Wave 3 phone screens + Wave 4 phone screens 重疊
 | **Palantir** | SG 只有 FDSE（Deltas），客戶端客製化 Foundry/Gotham |
 | **Microsoft / Amazon** | 有 SWE 但 team-by-team 挑，避開 DC ops / DevRel / sales engineering |
 | **HRT** | 極高薪但面試 bar 頂尖，C++ 基礎是隱性要求。不花額外準備時間 |
+| **Jane Street** | 全球頂級 quant 做市商。OCaml + Python，明文不需要 OCaml 經驗（會教你）。面試硬度跟 HRT 同級。不專門準備 |
