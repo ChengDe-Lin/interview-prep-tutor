@@ -24,13 +24,55 @@
 - **Graduate Program 2026**: Full-time program launching June 2026 for recent graduates in software engineering, data engineering, and systems engineering roles.
 
 
+## Visa Leadership Principles
+
+Visa's Leadership Principles are integrated into all decisions, interviews, and daily operations. **All BQ answers should map to these**:
+
+### 1. Lead Courageously
+- **Act like an Owner** — take responsibility beyond your scope
+- **Think Big and Challenge the Status Quo** — innovation, paradigm shifts
+- **Hold Ourselves and Each Other Accountable** — integrity, feedback, quality bar
+
+### 2. Obsess about Customers
+- **Listen and Learn from Customers** — user research, feedback loops, empathy
+- **Dream, Design, and Build the Future of Payments** — vision + execution on next-gen products
+- **Sell with Pride and Purpose** — belief in what you build, evangelize internally/externally
+
+### 3. Collaborate as One Visa
+- **Champion Inclusion** — diverse perspectives, psychological safety, accessibility
+- **Encourage Constructive Debate** — disagreement stories, better decisions through conflict
+- **Enable Each Other to Succeed** — cross-team support, mentorship, unblocking others
+
+### 4. Execute with Excellence
+- **Decide Quickly and Move Fast** — bias for action, speed without recklessness
+- **Deliver Seamlessly** — reliability, operational excellence, launch quality
+- **Learn from Our Mistakes** — failure recovery, post-mortems, continuous improvement
+
+**Interview tip**: Every behavioral question is evaluating alignment with 1-2 of these principles. Structure STAR stories to explicitly demonstrate the principle (e.g., "This is an example of how I acted like an owner...").
+
+## Employee Value Proposition (Inclusivity, Impact, Growth)
+
+Visa's EVP is built on three pillars — weave these into "Why Visa" answers:
+
+- **Inclusivity** — "We strive to create an environment where every voice is heard and valued."
+- **Impact** — "Your work at Visa helps connect communities and drives meaningful change."
+- **Growth** — "Your ambition turns into momentum. Each challenge you take on builds skills and opens the door to what's next."
+
 ## Interview Style
 
-- **Process**: Recruiter phone screen (30 min, resume + background) → Online Assessment on CodeSignal or HackerRank (4 timed questions: DSA, SQL, debugging) → Final round (3 x 45-minute panels): 2 domain-focused technical interviews + 1 behavioral round. Total timeline: 4–6 weeks.
-- **Behavioral round**: Every candidate gets a behavioral panel assessing culture fit. STAR format expected. Common topics: teamwork, conflict resolution, project delivery under pressure, stakeholder communication, cross-timezone collaboration, "What motivates you to work in payments?"
-- **Known BQ themes**: "Tell me about a time you disagreed with an engineer," "How did you ensure deadlines were met despite setbacks?", "How would you adapt to working with teams across time zones?", "Why Visa / Why payments?"
+- **Process**: 
+  1. **Application Review** — assess unique background alignment + how individuality powers Visa's mission
+  2. **Initial Screening (Recruiter Screen)** — 30 min phone, share your story, what drives you, connection with Visa culture
+  3. **Assessments** — CodeSignal or HackerRank (4 timed questions: DSA, SQL, debugging); or role-specific exercises (AI/leadership assessments)
+  4. **Final Round Interviews** — 3 x 45-minute panels: 2 domain-focused technical + 1 behavioral (culture fit, Leadership Principles alignment)
+  5. **Formal Offer** — mutual commitment outlined
+  
+  **Total timeline**: 4–6 weeks (varies by volume)
+
+- **Behavioral round**: Every candidate gets a behavioral panel assessing culture fit and Leadership Principles alignment. STAR format expected. Common topics: teamwork, conflict resolution, project delivery under pressure, stakeholder communication, cross-timezone collaboration, "What motivates you to work in payments?", integrity stories.
+- **Known BQ themes**: "Tell me about a time you disagreed with an engineer," "How did you ensure deadlines were met despite setbacks?", "How would you adapt to working with teams across time zones?", "Why Visa / Why payments?", "Tell me about a time you had to make a decision with incomplete information" (Handling Ambiguity), "Tell me about a mistake you made and what you learned" (Learn from Mistakes).
 - **Technical expectations**: Data structures and algorithms (LeetCode medium difficulty), SQL, systems debugging, and for senior roles: system design for high-throughput payment processing (low latency, idempotency, distributed transaction handling). Visa's technical bar is solid but less extreme than pure tech companies like Databricks.
-- **Preparation tip**: Have 4–5 polished STAR stories. Visa explicitly values integrity, inclusivity, and global impact — weave these themes into your answers. The domain focus of the two technical panels may vary by team (infrastructure vs. product vs. data engineering).
+- **Preparation tip**: Have 5–6 polished STAR stories mapped to Visa's Leadership Principles. Visa explicitly values integrity, inclusivity, and global impact — weave these themes into your answers. The domain focus of the two technical panels may vary by team (infrastructure vs. product vs. data engineering vs. AI/ML).
 
 ## ChengDe Experience Mapping
 
