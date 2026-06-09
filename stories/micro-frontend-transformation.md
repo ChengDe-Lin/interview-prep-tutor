@@ -39,7 +39,7 @@ The hardest part wasn't technical — it was the migration itself. Teams pushed 
 ## Result
 
 - Decoupled the monolith into **220+ independently deployable widgets** across 20 engineers
-- **46% improvement in feature delivery speed** and **58% reduction in defect age**, measured via Jira quarterly reviews comparing pre- and post-migration periods — and this was measured right after migration, when engineers were still learning the new framework but already very familiar with the old structure. For new engineers onboarding fresh, the improvement would be significantly larger
+- **46% improvement in feature delivery speed** and **58% reduction in defect age**, measured via Jira quarterly reviews comparing pre- and post-migration periods — and this was measured right after migration, when engineers were still learning the new framework but already very familiar with the old structure. The longer-term value compounded as more independent widgets were built; the architecture became one of the key reasons the platform could scale across multiple hospitals without each site becoming a separate customization burden
 - The architecture directly enabled **xEmulator** — a cloud-native simulation environment (now a patent) that lets teams and future third-party developers build and test widgets in isolation, without needing the full application source code
 - The entire effort — from initial research to migration-ready framework — took about **4-5 months**
 - Two patents emerged from this platform work: xDS (the clinical data store) and xEmulator
@@ -77,6 +77,7 @@ The hardest part wasn't technical — it was the migration itself. Teams pushed 
 
 5. 📊 結果：220+ widgets, 46% faster, 58% defect age↓
    → 而且這是大家還在學新框架時量的，新人來會更明顯
+   → 長期價值會隨 widget / hospital 數量複利成長，是多院部署的基礎
    → 衍生出 xEmulator 專利
 ```
 
