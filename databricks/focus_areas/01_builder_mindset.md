@@ -36,21 +36,23 @@ Agentic Product Development Workflow
 
 > Just like what I mentioned in the self-introduction, but let me go through it with more details.
 
-> The original workflow was very manual. PMs and designers created Figma mockups, handed them to engineers, waited for implementation, and then reviewed the result. A lot of time was lost in handoff, and the design could easily become out of date.
+> The original workflow was very manual. PMs and designers created Figma mockups, handed them to engineers, waited for implementation, and then reviewed the result. A lot of time was lost in handoff, and the design could easily become out of date with the latest codebase.
 >
 > I also looked at existing solutions, like v0 from Vercel, Figma Make, and Claude Design. I don't see them as wrong solutions. They are solving a very general problem, so they need to work across many different products and design systems. But in that kind of workflow, the design language and the real product code can still drift apart. Even if the tool creates a good mockup, teams often still need to rewrite or adjust it with their own codebase and component library.
 >
 > My problem was different. I was working inside one company, with one real product architecture, very specific component system, and a clear internal workflow.
 >
-> That gave me a different opportunity. Instead of only putting guardrails around a general AI design tool, I wanted to challenge the workflow itself. If we can give the agent enough product context, component context, and spec context, maybe the designer does not need to create a separate mockup first. They can build something with agent that is already much closer to production.
+> That gave me a different opportunity. Instead of only putting guardrails around AI-generated results, I wanted to challenge the workflow itself. If we can give the agent enough product context, component context, and spec context, maybe the designer does not need to create a separate mockup first. They can build something with the agent that is already much closer to production.
 >
 > I wanted to explore how far AI agents could push this workflow forward. Instead of treating AI as a small helper after the design step, I redesigned the process so PMs and designers could describe product intent directly to agents. The agents generate product-ready code using our real component system.
 >
-> After a direction is selected, designers can still refine the UI through vibe-coding. One important lesson we learned is that the spec has to move together with the code. So whenever an agent changes code, the spec also needs to be updated or referenced. That makes the output more maintainable.
+> After a direction is selected, designers can still refine the UI through vibe-coding. One important lesson we learned is that the spec has to move together with the code, which is the spec-driven development concept. So whenever an agent changes code, the spec also needs to be updated or referenced. That makes the output more maintainable.
 >
 > Once the UI is ready, another automated agent takes over to check backend API interfaces, fill in data logic, run visual validation and E2E testing, and move toward deployment.
 >
-> As mentioned before, the result was around 75% reduction in UI iteration effort. Highly recognize by our users, and more importantly, it changed how PMs, designers, and engineers think about product development. To me, builder mindset is not just trying a new tool. It is about testing a new possibility, finding the real workflow bottleneck, and turning the experiment into something people can actually adopt.
+> As mentioned before, the result was around 75% reduction in UI iteration effort. It was highly recognized by our users, and more importantly, it changed how PMs, designers, and engineers think about product development. To me, builder mindset is not just trying a new tool. It is about testing a new possibility, finding the real workflow bottleneck, and turning the experiment into something people can actually adopt.
+>
+> Beyond this project, I also try to keep a continuous learning loop. For example, I joined Anthropic-hosted seminars to learn Claude Code and agent workflow best practices, then brought the useful parts back to my team as shared guidelines. I think that is also part of builder mindset: not only learning new tools personally, but turning new practices into something the team can use.
 
 ## Continuous Learning 補充
 
@@ -64,7 +66,7 @@ Agentic Product Development Workflow
 >
 > I brought those learnings back to my team and shared them with other engineers. So my learning loop is not only personal. I try to turn new practices into team knowledge.
 
-
+> the first day OpenAI announanced they creaet a claude code plugin to let user call codex within claude code. I've found an issue of there authentication mechansim and posting that on the commuinty and get their fix.
 ## 追問準備
 
 如果問「你用了哪些 AI tools / agent concepts」：
