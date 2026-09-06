@@ -186,9 +186,9 @@ export const guidePages: GuidePage[] = [
       { cue: '我們試著救它', text: <>We tried several fixes. We improved JSON parsing, cached data that did not change often, and finally allowed some large requests to return raw JSON without schema checks. Each fix helped a little, but none solved the main problem.</> },
       { cue: 'Turning point', text: <>Raw JSON was the turning point. Once we removed the schema check, we also removed the main reason we had chosen GraphQL. We were back to untyped data, but now we had <mark className="concept">two different systems to maintain</mark>.</> },
       { cue: '後端 REST + 前端 xDS', text: <>We removed GraphQL and moved the backend back to <mark className="concept">smaller, focused REST APIs</mark>. On the frontend, I built xDS to keep shared clinical data in memory, organize it into clear data areas, and give every feature one consistent patient context.</> },
-      { cue: '追問：成本只是移到前端？', text: <>No, because xDS did not rebuild the same large union in the browser. Each REST API returned a smaller response for one purpose. xDS organized and shared that data after it arrived, so widgets could reuse it without repeatedly requesting and processing the same patient data.</> },
       { cue: 'Result', text: <>xDS became the main data layer for our platform and later supported every independently deployed widget. Its multi-version data design and patient-consistency model also received <mark className="outcome">a patent from the Taiwan Intellectual Property Office</mark>.</> },
       { cue: 'Lesson', text: <>I learned to test important technology choices with real production scale much earlier. I also learned that <mark className="outcome">removing a design that is not working can be more valuable than continuing to fix it</mark>.</> },
+      { cue: '追問：成本只是移到前端？', text: <>No, because xDS did not rebuild the same large union in the browser. Each REST API returned a smaller response for one purpose. xDS organized and shared that data after it arrived, so widgets could reuse it without repeatedly requesting and processing the same patient data.</> },
     ],
   },
   {
