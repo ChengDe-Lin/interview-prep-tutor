@@ -229,7 +229,7 @@ export const guidePages: GuidePage[] = [
       { cue: '重新定義 workflow', text: <>I proposed a different end state. Issues should automatically become tickets, and the ticket system should be the one reliable place for issue knowledge. The AI could then learn from cleaner, organized information.</> },
       { cue: '說服團隊', text: <>I explained this to the PM lead, engineering lead, and the leadership group. We agreed to stop treating messy chat history as a blocker and instead improve how knowledge was created and maintained. That decision allowed the project to move forward.</> },
       { cue: '建立 feedback loop', text: <>We also let the agent add comments to the tickets about what it had learned. PMs could see and correct that knowledge, and they had a clear place to update the assistant’s guidelines.</> },
-      { cue: 'Lesson', text: <>I learned that execution is not always about building the requested feature. Sometimes the most useful action is to <mark className="outcome">remove a false blocker and design a workflow that can grow</mark>.</> },
+      { cue: '真正的 lesson', text: <>The issue a user describes is not always the real problem. I need to understand <mark className="concept">the pain behind the request</mark>, then think about which solution will still work in the future. A good advisor does not simply accept every request. I also need to <mark className="outcome">explain the better choice clearly and earn the user’s support</mark>.</> },
     ],
   },
   {
