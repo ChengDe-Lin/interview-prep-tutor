@@ -165,8 +165,8 @@ export const guidePages: GuidePage[] = [
     purpose: '最適合回答 Customer Advisor、executive communication、influence 或 conflict。',
     focus: ['Customer Advisor', 'Team Fit'],
     points: [
-      { cue: 'Situation', text: <>In early 2023, our VP believed GenAI would change our industry. Since we were the AI division, he wanted our department to start exploring it early, even though most people were still unsure what it could really do.</> },
-      { cue: '我的責任', text: <>He selected me as the engineering lead for a seminar held every two weeks. I was responsible for finding speakers, choosing useful topics, helping people prepare, and reviewing each session with the VP before it was presented to about 120 people.</> },
+      { cue: '自然開場', text: <>A story that comes to mind is a GenAI seminar I led in early 2023. It is a good example of how I <mark className="concept">influenced people even though I was not their manager</mark>. At that time, our VP believed GenAI would change our industry, but most people on the team were still unsure what it could really do. He wanted our AI division to start exploring it early.</> },
+      { cue: '我的責任', text: <>Our VP selected me as the engineering lead for a seminar held every two weeks. I was responsible for finding speakers, choosing useful topics, helping people prepare, and reviewing each session with the VP before it was presented to about 120 people.</> },
       { cue: '第一個困難', text: <>The biggest problem was motivation. Engineers were busy, and many felt their experiments were too simple to share. I used the trust I had built across teams to find volunteers, then worked with each speaker to turn a small experiment into a story that could help the audience.</> },
       { cue: '扛住 review 壓力', text: <>Some VP reviews were difficult and the feedback was very direct. Because I had asked these colleagues to volunteer, I felt responsible for supporting them. I helped rebuild their confidence, researched the topic with them, and rewrote the presentation until it was ready.</> },
       { cue: '向 VP 說明價值', text: <>Later, when the VP questioned whether the seminar should continue, I explained that the goal was not to produce a big new idea every two weeks. The real value was <mark className="concept">making AI experimentation a normal team habit</mark>. He agreed, and the program continued for six months.</> },
@@ -180,7 +180,7 @@ export const guidePages: GuidePage[] = [
     purpose: '最適合回答 failure、trade-off、data architecture 與 learning。',
     focus: ['Data & AI', 'Failure / Learning'],
     points: [
-      { cue: 'Situation', text: <>Our frontend had to call many backend services, and the frontend and backend did not always agree on the data format. We chose GraphQL to reduce the number of API calls and create a clear schema between the two sides.</> },
+      { cue: '自然開場', text: <>One failure that <mark className="concept">taught me a lot</mark> came from our decision to use GraphQL. At the time, our frontend had to call many backend services, and the frontend and backend did not always agree on the data format. GraphQL looked like a good solution because it could reduce the number of API calls and give both sides a clear schema.</> },
       { cue: '我的失誤', text: <>I did not question the choice at the beginning because the reasoning sounded good. I joined the work without first testing whether the design would still work with the large amount of data in a clinical system.</> },
       { cue: 'Scale 後出問題', text: <>GraphQL worked with small examples. But with large patient histories, medication records, and lab results, the time spent reading and checking the data became greater than the time we saved by reducing API calls.</> },
       { cue: '我們試著救它', text: <>We tried several fixes. We improved JSON parsing, cached data that did not change often, and finally allowed some large requests to return raw JSON without schema checks. Each fix helped a little, but none solved the main problem.</> },
@@ -195,7 +195,7 @@ export const guidePages: GuidePage[] = [
     purpose: '最適合回答 initiative、ownership 與 proactive improvement。',
     focus: ['Bias for Action', 'Execution'],
     points: [
-      { cue: 'Problem', text: <>Backend and frontend teams kept related data schemas in different places. They often went out of sync, and every change created another round of checking, discussion, and manual updates.</> },
+      { cue: '自然開場', text: <>A smaller project I’m proud of started with <mark className="concept">a problem I kept seeing between our backend and frontend teams</mark>. They stored related data schemas in different places, so the schemas often went out of sync. Every change created another round of checking, discussion, and manual updates.</> },
       { cue: '我主動開始', text: <>This was not a project assigned to me. I saw the same delay happen again and again, so I proposed making the backend schema the starting point and generating the frontend types automatically.</> },
       { cue: '第一步', text: <>I built a simple pipeline: the backend team continued defining schemas in Python, we converted them into JSON Schema, and then generated the TypeScript interfaces used by the frontend.</> },
       { cue: '繼續擴大', text: <>After that worked well, we automated more of the data-node code too. Once the process was stable, we documented it and handed it to the teams that used it, so it did not depend on me.</> },
@@ -208,7 +208,7 @@ export const guidePages: GuidePage[] = [
     purpose: '最適合回答 growth、self-critique、platform thinking 與 API integration。',
     focus: ['Growth', 'Trade-offs'],
     points: [
-      { cue: 'Situation', text: <>Our product had to connect with existing hospital systems, but every hospital used different APIs, data formats, and login methods.</> },
+      { cue: '自然開場', text: <>One project that shows <mark className="concept">how my thinking changed as I gained experience</mark> is HAL, an integration layer I designed for hospital systems. Our product had to connect with those systems, but every hospital used different APIs, data formats, and login methods.</> },
       { cue: '我設計的 V1', text: <>For our first hospital, I designed HAL, a frontend package that converted those different APIs into one common interface. It solved the immediate problem and worked well for that first hospital.</> },
       { cue: '第二間醫院暴露問題', text: <>When we added a second hospital, the weakness became clear. Each hospital had its own copy of the package. If an API vendor changed something, we had to update every hospital copy separately, even when several hospitals used the same vendor.</> },
       { cue: '回頭檢查自己的設計', text: <>Later, after I built our add-on platform, I looked back at HAL and realized I had designed for one hospital, not for a growing platform. No one asked me to replace it; <mark className="action">I proposed changing my own earlier design</mark>.</> },
@@ -222,7 +222,8 @@ export const guidePages: GuidePage[] = [
     purpose: '最適合回答 customer discovery、workflow reframing、RAG 或 adoption。',
     focus: ['Customer Advisor', 'Bias for Action'],
     points: [
-      { cue: 'Original ask', text: <>Our team was building a knowledge assistant for customer support. The PM team said it had to read many chat groups, find messages about known issues, group them together, and create solutions before the assistant could go live.</> },
+      { cue: '自然開場', text: <>One experience that <mark className="concept">taught me a lot about adoption</mark> came from a knowledge assistant we were building for customer support. The tool looked promising, but the project was blocked because the PM team believed it was not ready to go live.</> },
+      { cue: '原本的 blocker', text: <>They wanted the assistant to read many chat groups, find messages about known issues, group those messages together, and create solutions before we could launch it.</> },
       { cue: '我看到的問題', text: <>I thought we were making the old workflow permanent. Chat groups were useful for urgent communication, but they were messy and were not designed to be a long-term knowledge base. Making AI understand every old message perfectly was <mark className="concept">the wrong go-live requirement</mark>.</> },
       { cue: '重新定義 workflow', text: <>I proposed a different end state. Issues should automatically become tickets, and the ticket system should be the one reliable place for issue knowledge. The AI could then learn from cleaner, organized information.</> },
       { cue: '說服團隊', text: <>I explained this to the PM lead, engineering lead, and the leadership group. We agreed to stop treating messy chat history as a blocker and instead improve how knowledge was created and maintained. That decision allowed the project to move forward.</> },
