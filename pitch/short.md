@@ -4,7 +4,7 @@
 
 ## English Version
 
-Hi, I'm ChengDe. I graduated first in my class from NTU's AI program and was fast-tracked to Senior Engineer in about two years. At AICS, I architected a micro-frontend platform that doubled our feature delivery speed and led to two patents. More recently, I've been leading our AI transformation — designers in my division can now vibe-code their own widgets, cutting their iteration effort by about 75%. I'd love to tell you more about any of these.
+Hi, I'm ChengDe. I earned my master's degree in AI from National Taiwan University, graduating first in my class, and was promoted to Senior Engineer in about two years—roughly half the typical timeline in my department. At AICS, I architected a micro-frontend platform that doubled our feature delivery speed and led to two patents. More recently, I've been leading our AI transformation—designers in my division can now vibe-code their own widgets, cutting their iteration effort by about 75%. I'd love to tell you more about any of these.
 
 ## 設計邏輯
 

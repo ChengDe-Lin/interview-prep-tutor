@@ -1,0 +1,191 @@
+%% Use the "normalphoto" option if you want a normal photo instead of cropped to a circle
+% \documentclass[10pt,a4paper,normalphoto]{altacv}
+
+\documentclass[10pt,a4paper,ragged2e,withhyper]{altacv}
+
+\geometry{left=0.50cm,right=1.00cm,top=0.6cm,bottom=0.6cm,columnsep=1.0cm}
+
+\usepackage{paracol}
+
+\iftutex
+  \setmainfont{Roboto Slab}
+  \setsansfont{Lato}
+  \renewcommand{\familydefault}{\sfdefault}
+\else
+  \usepackage[rm]{roboto}
+  \usepackage[defaultsans]{lato}
+  \renewcommand{\familydefault}{\sfdefault}
+\fi
+
+\definecolor{SlateGrey}{HTML}{2E2E2E}
+\definecolor{LightGrey}{HTML}{666666}
+\definecolor{DarkPastelRed}{HTML}{450808}
+\definecolor{PastelRed}{HTML}{8F0D0D}
+\definecolor{GoldenEarth}{HTML}{E7D192}
+\definecolor{DarkBlue}{HTML}{003153}
+\definecolor{PhantomBlue}{HTML}{191970}
+\colorlet{name}{black}
+\colorlet{tagline}{PhantomBlue}
+\colorlet{heading}{DarkBlue}
+\colorlet{headingrule}{GoldenEarth}
+\colorlet{subheading}{PhantomBlue}
+\colorlet{accent}{PastelRed}
+\colorlet{emphasis}{SlateGrey}
+\colorlet{body}{LightGrey}
+
+\renewcommand{\namefont}{\Huge\rmfamily\bfseries}
+\renewcommand{\personalinfofont}{\footnotesize}
+\renewcommand{\cvsectionfont}{\LARGE\rmfamily\bfseries}
+\renewcommand{\cvsubsectionfont}{\large\bfseries}
+
+\renewcommand{\cvItemMarker}{{\small\textbullet}}
+\renewcommand{\cvRatingMarker}{\faCircle}
+
+\input{pubs-num.tex}
+\addbibresource{sample.bib}
+
+\begin{document}
+\name{Lin ChengDe}
+\tagline{AI-Native Platform Engineer}
+
+\photoR{2.8cm}{chengde_photo}
+
+\personalinfo{%
+  \email{chengde.singapore@gmail.com}
+  \phone{+65-9363-1216}
+  \location{Singapore, SINGAPORE}
+  \par\vspace{0.5em}
+  \linkedin{chengde-lin-ab73981a5}
+  \github{ChengDe-Lin}
+}
+
+\makecvheader
+
+\small Built AI and platform systems in safety-critical healthcare, with experience across engineering, product, and design. Strong in architecture and technical communication in \textbf{Mandarin and English}.
+
+\smallskip
+\columnratio{0.62}
+
+\begin{paracol}{2}
+\cvsection{Experience}
+
+\cvevent{Senior Software Engineer}{ASUS Intelligent Cloud Service (AICS)}{Nov 2023 -- Ongoing}{Singapore}
+\textit{Led the AI-native transformation of the \href{https://aics.asus.com/xhis-en/}{\textcolor{DarkBlue}{xHIS}} clinical platform — architecting its micro-frontend platform, agentic tooling, and knowledge systems.}
+\begin{itemize}
+
+  \item Spearheaded an \textbf{AI-native development ecosystem}: authored \textbf{Agent Skills} and engineered \textbf{20+ MCP tools} for component discovery, workflow integration, and design-system-aware context injection — enabling \textbf{non-technical designers to prompt-generate deployable widgets}, reducing UI iteration effort by \textbf{$\sim$75\%} and eliminating handoff overhead.
+
+  \item \textbf{Co-invented two Taiwan IPO patents}: \textbf{xHIS Data Store (xDS)}, a shell-layer state store with multi-version schema tolerance enforcing patient identity consistency across widgets; and \textbf{xEmulator}, a cloud-native simulation environment for isolated widget development and integration testing.
+
+  \item Engineered a \textbf{Schema-Driven Development} pipeline generating DB schemas, TypeScript interfaces, and a centralized frontend data access layer from a single source of truth — compressing a 2–3 day cross-language sync process to \textbf{under 10 minutes}.
+
+  \item Architected a \textbf{micro-frontend platform} that decoupled the monolithic \href{https://aics.asus.com/xhis-en/}{\textcolor{DarkBlue}{xHIS}} application into 220+ independently deployable widgets — boosting feature delivery speed by \textbf{46\%} and reducing defect age by \textbf{58\%}.
+
+  \item Built a \textbf{multi-source RAG support agent} over conversational logs, support tickets, PRDs, and codebase — achieving \textbf{91\% recall} on benchmarked \href{https://aics.asus.com/xhis-en/}{\textcolor{DarkBlue}{xHIS}} operational queries.
+
+\end{itemize}
+
+\divider
+
+\cvevent{Software Engineer}{Asus Intelligent Cloud Service (AICS)}{Sep 2021 -- Oct 2023}{Taiwan}
+\begin{itemize}
+    \item Designed integration abstractions to unify heterogeneous hospital legacy APIs, enabling scalable multi-institution onboarding; built E2E and stress testing frameworks achieving \textbf{100\%} critical defect coverage pre-release.
+    \item Built an ETL pipeline for medical time-series data into Elasticsearch, reducing query latency by \textbf{90\%}; devised a partial document regeneration strategy cutting update time by \textbf{80\%+}.
+\end{itemize}
+
+\medskip
+\cvsection{SKILLS}
+
+\makebox[2.0 cm][l]{\textbf{Languages}}
+{\LaTeXraggedright
+\cvtag{TypeScript}
+\cvtag{Python}
+\cvtag{HTML/CSS}
+\cvtag{C/C++}
+\par}
+
+\divider\smallskip
+
+\makebox[2.0 cm][l]{\textbf{Frameworks}}
+{\LaTeXraggedright
+\cvtag{Vue3}
+\cvtag{Vite}
+\cvtag{LangGraph}
+\cvtag{Express}
+\cvtag{Electron}
+\par}
+
+\divider\smallskip \\
+
+\makebox[2.0 cm][l]{\textbf{Databases}}
+{\LaTeXraggedright
+\cvtag{MongoDB}
+\cvtag{PostgreSQL}
+\cvtag{Redis}
+\cvtag{Elasticsearch}
+\par}
+
+\divider\smallskip \\
+\makebox[2.0 cm][l]{\textbf{DevOps}}
+{\LaTeXraggedright
+\cvtag{Docker}
+\cvtag{K8s}
+\cvtag{Azure}
+\cvtag{AWS}
+\cvtag{Grafana}
+\par}
+
+\medskip
+
+\switchcolumn
+
+\cvsection{AI Expertise}
+
+\textbf{Agentic Systems} \\
+\vspace{0.4em}
+\cvtag{Multi-Agent / A2A} \cvtag{LangGraph} \\
+\cvtag{Agent Skills} \cvtag{Claude Code}
+
+\divider\smallskip
+
+\textbf{Protocol \& Retrieval} \\
+\vspace{0.4em}
+\cvtag{MCP} \cvtag{Multi-source RAG} \\
+\cvtag{Agentic Retrieval}
+
+\divider\smallskip
+
+\textbf{Reliability} \\
+\vspace{0.4em}
+\cvtag{AI Observability} \cvtag{Context Engineering} \\
+\cvtag{Harness Engineering}
+
+\cvsection{Achievements}
+
+\cvachievement{\faTrophy}{Dept. Code Champion Award}{Awarded for consistently delivering high-impact, high-quality code, recognized by senior leadership.}
+
+\divider
+
+\cvachievement{\faTrophy}{Dept. Peer Feedback Award}{Voted by peers for outstanding collaboration and cross-team impact.}
+
+\divider
+
+\cvachievement{\faMicrophone}{Host of GenAI Application Seminars}{Led 10+ sessions on generative AI adoption for a 120-person department; catalyzed company-wide AI tooling investment.}
+
+\divider
+
+\cvachievement{\faRocket}{Outstanding Performance}{Fast-tracked to Senior Software Engineer in 2 years (vs.\ 4--5 avg) for outstanding performance.}
+
+\cvsection{Education}
+
+\cvevent{M.Sc.\ in Computer Science \& Information Engineering (AI Program)}{National Taiwan University}{Sep 2019 -- July 2021}{}
+GPA: 4.24 / 4.30 \quad Rank: \textbf{1st in Dept.}
+
+\divider
+
+\cvevent{B.Sc.\ in Physics, Minor in Computer Science}{National Taiwan Normal University}{Sep 2015 -- June 2019}{}
+\textbf{Valedictorian}, College of Science
+
+\end{paracol}
+
+\end{document}

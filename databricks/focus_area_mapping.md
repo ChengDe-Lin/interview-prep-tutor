@@ -90,7 +90,7 @@
 
 ## 可以用的數字
 
-- 220+ independently deployable widgets。
+- 300+ independently deployable widgets。
 - 20 engineers involved。
 - migration 當下 46% delivery speed improvement。
 - migration 當下 58% defect age reduction。
@@ -157,4 +157,3 @@
 2. Micro-frontend transformation：architecture + adoption + measurable outcome。
 3. AI seminar culture：builder mindset + influence + customer/stakeholder advisor。
 4. GraphQL to xDS 或 HAL to Add-on API：technical trade-off、failure reflection、platform thinking。
-

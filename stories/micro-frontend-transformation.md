@@ -2,7 +2,7 @@
 
 ## 適用 BQ 類型
 - **Leadership** — 主動 own 20 人參與的架構轉型
-- **Impact** — 46% delivery speed↑, 58% defect age↓, 220+ widgets
+- **Impact** — 46% delivery speed↑, 58% defect age↓, 300+ widgets
 - **Trade-offs** — 技術選型 + in-page/off-page 雙軌設計
 - **Ambiguity** — 從模糊的「我們需要拆」到完整平台架構
 
@@ -38,7 +38,7 @@ The hardest part wasn't technical — it was the migration itself. Teams pushed 
 
 ## Result
 
-- Decoupled the monolith into **220+ independently deployable widgets** across 20 engineers
+- Decoupled the monolith into **300+ independently deployable widgets** across 20 engineers
 - **46% improvement in feature delivery speed** and **58% reduction in defect age**, measured via Jira quarterly reviews comparing pre- and post-migration periods — and this was measured right after migration, when engineers were still learning the new framework but already very familiar with the old structure. The longer-term value compounded as more independent widgets were built; the architecture became one of the key reasons the platform could scale across multiple hospitals without each site becoming a separate customization burden
 - The architecture directly enabled **xEmulator** — a cloud-native simulation environment (now a patent) that lets teams and future third-party developers build and test widgets in isolation, without needing the full application source code
 - The entire effort — from initial research to migration-ready framework — took about **4-5 months**
@@ -49,7 +49,7 @@ The hardest part wasn't technical — it was the migration itself. Teams pushed 
 - **"Developer doesn't need to know" philosophy**: Emphasize the encapsulation — same component works as in-page or off-page, same xdsClient API regardless of runtime mode
 - **Source code detective work**: Finding the runtime overwrite in vite-plugin-federation source shows depth and resourcefulness
 - **People leadership, not just tech**: Navigating team resistance through relationships, not authority
-- **Scale**: 220+ widgets, 20 engineers, 3 applications — this is enterprise-scale transformation
+- **Scale**: 300+ widgets, 20 engineers, 3 applications — this is enterprise-scale transformation
 
 ## Deep Dive Topics（面試官追問用）
 - **vite-plugin-federation runtime overwrite 細節**: 怎麼發現的、怎麼用的、有什麼 trade-off
@@ -75,7 +75,7 @@ The hardest part wasn't technical — it was the migration itself. Teams pushed 
    → 團隊說拆不出來沒時間 → 靠關係一個一個推 + 主管往上爭取資源
    → 好幾個月兩套架構並存，壓力很大但撐過來了
 
-5. 📊 結果：220+ widgets, 46% faster, 58% defect age↓
+5. 📊 結果：300+ widgets, 46% faster, 58% defect age↓
    → 而且這是大家還在學新框架時量的，新人來會更明顯
    → 長期價值會隨 widget / hospital 數量複利成長，是多院部署的基礎
    → 衍生出 xEmulator 專利

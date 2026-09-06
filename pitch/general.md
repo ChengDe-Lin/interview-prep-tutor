@@ -10,7 +10,7 @@ Hi, I'm ChengDe. I'm a senior software engineer working on a clinical platform u
 
 **[Experience + Credibility]**
 
-I became a software engineer right after graduating first in my class from NTU's AI program, and was promoted to Senior Engineer in about half the usual timeline. I was voted by my peers for a cross-team collaboration award, and I've been hosting internal AI seminars that helped spread new ideas across teams — and a few of those ideas actually worked out.
+I earned my master's degree in AI from National Taiwan University, graduating first in my class. I then became a software engineer and was promoted to Senior Engineer in about two years—roughly half the typical timeline in my department. I later received our Code Champion Award and Peer Feedback Award, a peer-voted recognition for cross-team collaboration. I've also been hosting internal AI seminars that helped spread new ideas across teams—and a few of those ideas actually worked out.
 
 **[Achievement 1 — Platform / System Design]**
 
@@ -27,7 +27,7 @@ That's a quick introduction about me. I'd love to dive deeper into any of these 
 ## Key Talking Points
 
 - Hook: 臨床平台 + 兩個目標：modular enough to scale → smart enough for non-engineers
-- Credibility: NTU 第一名、2 年升 Senior（平均 4-5 年）、同儕投票獎、AI seminar impact
+- Credibility: National Taiwan University AI master's 第一名、2 年升 Senior（平均 4-5 年）、同儕投票獎、AI seminar impact
 - Platform: micro-frontend 架構，complexity 大幅降低，delivery 翻倍，兩個專利
 - AI: designer/PM 可以 vibe-code widgets，省 75% iteration effort
 

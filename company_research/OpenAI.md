@@ -2,7 +2,8 @@
 
 ## Company Overview
 - Founded: 2015 (as non-profit); transitioned to capped-profit structure 2019; preparing for IPO ~2026
-- Global headcount: ~3,000–5,000+ employees (rapidly growing; plans to reach 8,000 by late 2026)
+- Global headcount: **~4,500 employees** as of early 2026 (up from ~3,000 in 2025); plans to reach **8,000 by end of 2026**
+- **$122 billion fundraise** closed April 2, 2026 — to accelerate next phase of AI
 - Singapore office opened November 2024 — second Asia office after Japan (Tokyo)
 - Singapore registered entity: OpenAI Pte. Ltd. (202312123D), Paya Lebar Square
 - Singapore headcount (as of 2025): ~13 employees initially, target 50–70 by end of 2025
@@ -11,6 +12,29 @@
 - Partnership with AI Singapore (AISG): committed up to $1M for SEA-language datasets and open resources
 - Singapore has one of the highest per-capita ChatGPT usage rates globally — weekly active users doubled in 2024
 - **Data residency in Asia**: announced for Japan, India, Singapore, and South Korea (ChatGPT Enterprise, Edu, and API Platform)
+
+## Recent Product & Model Launches (2026)
+
+### Model Releases
+| Date | Model | Key Highlights |
+|------|-------|---------------|
+| Mar 5, 2026 | **GPT-5.4** | Most capable efficient frontier model; SOTA coding, computer use, 1M-token context |
+| Apr 16, 2026 | **GPT-Rosalind** | Life sciences reasoning model (drug discovery, genomics, protein reasoning) |
+| Apr 23, 2026 | **GPT-5.5** | "Smartest model yet" — code, research, data analysis, document creation, software operation |
+| May 5, 2026 | **GPT-5.5 Instant** | New default ChatGPT model replacing GPT-5.3 Instant |
+
+### Product Launches
+- **ChatGPT Images 2.0** (Apr 21) — SOTA image generation with text rendering & multilingual support
+- **ChatGPT for Excel & Google Sheets** — Sidebar for formulas, trackers, budgets, multi-tab work
+- **ChatGPT for Clinicians** — Free US clinical workspace with CME credits
+- **Voice Intelligence API** (May 7) — Realtime voice models for reasoning, translation, transcription
+- **Ads in ChatGPT** (May 7) — Pilot ad campaigns with beta self-serve tools
+- **OWL Architecture for Atlas** — New browser built in SwiftUI with Chromium via out-of-process browser layer
+
+### Corporate
+- Acquired **TBPN** (Apr 8) and announced **Astral** acquisition (Mar 24)
+- **ChatGPT Futures: Class of 2026** — 26 students recognized for AI work
+- **Privacy Filter** — Open-weight PII detection/redaction model
 
 ---
 
@@ -272,6 +296,13 @@
 ---
 
 ## Engineering Culture & Work Style
+
+### Internal Structure (updated 2026)
+- **DRI Model**: Every project has a Directly Responsible Individual who owns the entire project — not separate DRIs for design/product/engineering like at other companies
+- **Barbell Hiring**: Hire extreme generalists who can work across mobile, frontend, backend. Tools like Codex lower the barrier to cross-domain work
+- **Lean PM Ratios**: PM:Engineer ratio is ~1:30 (vs typical 1:8). On the Codex team it's 1:40
+- **Research + Engineering Blur**: SWEs directly iterate on models and post-training. Research and engineering sit within the same team structure
+- **"Ship on Day One" Culture**: Every new engineer ships and merges a change on their first afternoon
 
 ### The Good
 - **Glassdoor**: 4.4/5 overall, 4.2/5 for culture & values, 82% would recommend
@@ -686,5 +717,29 @@ Colin Jarvis: "Going super deep on the customer's problem almost always yields g
 
 ---
 
-*Last updated: 2026-03-27*
-*Research type: Deep dive on FDE role + Competency deep dive*
+## Recommended Stories for OpenAI FDE Interview
+
+| BQ 類型 | 推薦故事 | 為什麼適合 |
+|---------|---------|-----------|
+| 0-to-1 / Founder Mentality | [Micro-Frontend Transformation](../stories/micro-frontend-transformation.md) | Full end-to-end ownership, architected from scratch, 2 patents — strongest "founder" signal |
+| Ambiguity / Unclear Requirements | [Micro-Frontend Transformation](../stories/micro-frontend-transformation.md) | No existing playbook, had to define the approach independently |
+| Leadership / Influence Without Authority | [AI Seminar Culture](../stories/ai-seminar-culture.md) | Nobody asked you to do it — pure agency, led to real adoption across teams |
+| Failure + Learning | [HAL → Add-on API](../stories/hal-to-addon-api.md) | Shows you can pivot, admit a wrong approach, and ship a better solution |
+| Trade-offs / Technical Decisions | [GraphQL → xDS](../stories/graphql-to-xds.md) | Deep technical trade-off reasoning under constraints |
+| Customer Co-development / Stakeholders | ⚠️ **GAP** — no story specifically about external customer/stakeholder collaboration |
+| Transparency Under Pressure | ⚠️ **GAP** — no story about delivering difficult news to stakeholders |
+
+### ⚠️ Story Gaps for OpenAI FDE
+
+OpenAI FDE 面試特別重視 **customer-facing** 和 **handling demanding stakeholders** 的故事。你目前的故事庫主要是 internal team 的經歷，缺少：
+
+1. **與外部客戶合作的故事** — FDE 50% 的工作是 embed 在客戶端，面試官會特別追問這類經驗
+2. **在壓力下對 stakeholder 透明溝通的故事** — 比如壞消息要怎麼講、scope 要怎麼 negotiate
+3. **LLM/AI 系統 production deployment 的故事** — 你有 agentic AI harness 的經驗，但還沒整理成 STAR 故事
+
+建議優先補這三個方向的故事。
+
+---
+
+*Last updated: 2026-05-09*
+*Research type: Deep dive on FDE role + Competency deep dive + 2026 product/model updates*

@@ -1,0 +1,52 @@
+# Progress
+
+## 2026-09-06
+- Located the bilingual Databricks hiring-manager preparation document.
+- Confirmed an existing Vite web app is available under `web/`.
+- Started source and app inspection.
+- Checked the complete source document into `databricks/`.
+- Replaced the generic app surface with a Databricks-focused command center and section reader.
+- Added source-derived navigation, search, reading modes, URL hashes, keyboard shortcuts, and responsive layout.
+- Verified the production build with Node 20.19.4; TypeScript and Vite compilation pass.
+- Confirmed the local preview responds successfully, then stopped the preview server.
+- Kept the result local-only at the user's request; no Sites dependency or hosting configuration was added.
+- Mapped the full document hierarchy and identified English blockquotes as the reliable spoken-answer boundary.
+- Chose a Markdown-driven UI with deep links, search, focus filters, and bilingual display modes.
+- Clarified promotion timing as department-specific and replaced generic peer recognition wording with the formal Peer Feedback Award name.
+- Clarified that the 46% delivery and 58% defect-age improvements were measured during migration, then separated the continuing compounding impact as the product grew beyond 300 widgets.
+- Elevated the two Taiwan Intellectual Property Office patents into explicit, independently trackable proof of external recognition.
+- Reframed Why FDE around engineering depth plus communication and future planning, backed by architecture ownership and executive trust, then connected it to the AI-era discover-build-validate-adopt loop.
+- Rewrote the Why FDE opening in a conversational, manager-friendly voice and removed defensive or self-congratulatory phrasing.
+- Reworked the entire Why FDE answer into one continuous spoken narrative, removing the broken FDE-to-"But" transition.
+- Simplified the communication and future-planning point into direct, concrete language.
+- Restored the user's intended AI-era thesis: narrower coding/implementation gaps, stronger differentiation through problem discovery, solution ownership, user conviction, and adoption.
+- Preserved the full Why FDE narrative and added a dedicated communication point: repeated presentations taught the candidate to make the problem, importance, trade-offs, and required decision clear across audiences.
+- Rebuilt Why Databricks around personal evidence rather than a product summary: broader cross-industry impact, firsthand production-AI constraints, Databricks' governed data foundation, FDE outcome ownership, and platform-building culture.
+- Sharpened Why Databricks to the company-specific thesis: general models are already surprisingly capable, proprietary data and domain knowledge are the next AI bottleneck and competitive battleground, and Databricks is differentiated by its position at the center of enterprise data.
+- Clarified that the 15–20 xDesign tasks are the current validated count and highlighted the task count and scoped 90% estimate separately.
+- Started a readability-first redesign based on live interview coverage tracking.
+- Replaced broad substring matching with curated whole-phrase rules.
+- Limited each talking point to at most three non-overlapping highlights, with one per semantic category.
+- Replaced the document-driven reader with 12 custom interview-flow pages.
+- Verified the new static guide compiles, contains no automatic highlight matcher, and is served by the running local site.
+- Expanded About Me from seven short prompts to a ten-part, three-minute narrative with restored credibility, platform outcomes, AI results, and leadership communication.
+- Verified the expanded About Me page compiles successfully and is available through the running local site.
+- Clarified the education line for a Singapore audience: full university name plus master's degree in AI, with first-in-class as a separate proof point.
+- Split Why FDE from Why Databricks and promoted the two flagship stories ahead of five backup stories.
+- Added an official six-focus-area coverage page and custom questions for Ankur.
+- Removed the obsolete automatic parsing and highlighting implementation.
+- Completed the simplified light UI, semantic keyword highlighting, talking-point checkmarks, progress bar, and reset control.
+- Rebuilt successfully and confirmed the already-running local site responds with HTTP 200.
+- Simplified the Why Databricks closing to: use my experience and continue to grow.
+- Re-read and rewrote all five backup stories as clear spoken narratives with simple vocabulary, explicit actions, results, and lessons.
+- Kept xCraft / xDesign as Story 1, strengthened its patient-safety motivation, and left the rest of both major stories unchanged during this review.
+- Verified the final production build successfully.
+- Added a dedicated Major Story Q&A page after the two flagship stories, restoring xCraft/xDesign failures and Add-on Platform architecture/adoption follow-ups without lengthening the three-minute scripts.
+- Verified the new Q&A page order, automatic navigation inclusion, and final production build.
+- Published the Databricks-only guide to GitHub Pages, then identified that it had replaced rather than extended the original multi-company app.
+- Started restoring the legacy tutor as the root while retaining the Databricks guide at a dedicated hash route.
+- Restored the original multi-company tutor component and styles without deleting current source data.
+- Added `#databricks` for the guide overview and `#databricks/<page-id>` for direct guide pages.
+- Browser-verified the root Companies/Stories navigation, Databricks overview, and direct Why Databricks route locally.
+- Published the combined site and browser-verified the same three routes on GitHub Pages.
+- Started a full spoken-flow review of all five backup stories, focusing on abrupt openings and transitions.

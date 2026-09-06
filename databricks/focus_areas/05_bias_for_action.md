@@ -25,7 +25,8 @@ Proactive AI Workflow Discovery
 
 - chatbot 一開始不是正式需求，是同事間抱怨客服電話和群組訊息回不完。
 - 你主動想到 LLM 適合處理大量重複問答，只要把知識準備好。
-- 你用休息時間先做小 demo，PM lead 一開始甚至不知道。
+- 你一開始沒有直接做 chatbot，而是先把對話紀錄 dump 到 NotebookLM 做 POC，驗證模型能不能從既有對話裡找出有用答案。
+- 發現有機會後，你才用休息時間做一個簡單 chatbot demo，PM lead 一開始甚至不知道。
 - 後來 PM 試用後，主管才意識到這是能 scale support workflow 的方向。
 - agentic workflow 一開始任務只是做 agent 取代 RD 重寫 designer mockup。
 - 你邊做邊質疑：為什麼要 rework？為什麼不能讓 designer 直接用 agent 產 UI？
@@ -41,21 +42,23 @@ Proactive AI Workflow Discovery
 >
 > One example started almost as a joke between colleagues. Some teammates said customer support calls were endless, and they had to reply to many group chats again and again. I thought: this is exactly the kind of repetitive knowledge work that LLMs should be good at. If we can prepare the right knowledge, the model should be able to answer many repeated questions.
 >
-> At that time, this was not a formal project. The PM team lead was not even aware I was helping with it. I used my own spare time to build a small demo first. Then a few PMs started testing it, and gradually their lead realized this could be a real direction. It was not just a chatbot. It was a way to scale support workflow instead of relying on people to answer the same questions everywhere.
+> At that time, this was not a formal project. I did not start by building a full chatbot. I first took some existing conversation logs, dumped them into NotebookLLM, and used it as a very quick POC. I wanted to see whether the LLM could actually retrieve useful context and answer questions from the messy history.
+>
+> The result was not perfect, but it showed potential. So I used my own spare time to build a simple chatbot demo. The PM team lead was not even aware I was helping with it at the beginning. Then a few PMs started testing it, and gradually their lead realized this could be a real direction. It was not just a chatbot. It was a way to scale support workflow instead of relying on people to answer the same questions everywhere.
 >
 > Another example is the agentic product development workflow. My original task was more limited: build an agent that could replace part of the engineer's work, starting from reading a designer's mockup and recreating the UI in code.
 >
-> But while building it, I kept asking whether this workflow was actually right. Why should designers create a Figma mockup, then engineers rework it into real product code? If the agent can understand our product context and component system, maybe designers can use the agent directly to create UI directions.
+> But while building it, I kept asking whether this workflow was actually right. Why should designers create a Figma mockup, then engineers rework it into real product code? If the agent can understand our product context and component system, maybe designers can use the agent directly to create UI directions in real code.
 >
-> So before this became an official direction, I privately found a designer to test the idea with me. For quite a long time, we only had one early user. We kept iterating quietly. Later, when the workflow became more mature, the demo surprised the team, because it showed that AI could change not only how engineers implement UI, but how PMs, designers, and engineers collaborate.
+> So before this became an official direction, I privately found a designer to test the idea with me. For quite a long time, we only had one early user. We kept iterating. until the workflow became more mature, the demo surprised the team, because it showed that AI could change not only how engineers implement UI, but how PMs, designers, and engineers collaborate.
 >
-> Now I am pushing the coverage even earlier, toward PM product intent, and the team is adopting this workflow more broadly.
+> Now I am pushing the coverage even wider, toward PM product intent, and the team is adopting this workflow more broadly.
 >
 > This pattern also shows up in smaller daily work. For example, when PMs wrote specs and then had to manually convert the content into structured tables for database definitions, I saw that it was very suitable for agents. The agent can do the repetitive transformation, and humans only need to review. These things may be too small to demo in a leadership meeting, but they create real daily efficiency.
 >
-> Outside AI, I had a similar experience with xDS schema development. Backend and frontend originally maintained related schemas separately, so misalignment happened and slowed the team down. I led an auto-generation mechanism: backend continued defining schemas in Python, then we converted them into JSON Schema and TypeScript interfaces. After the mechanism became mature, we pushed further and automated more of the data node implementation. A bottleneck that used to slow the team down became more than 10 times faster.
+> Outside AI, I had a similar experience with xDS schema development. Backend and frontend originally maintained related schemas separately, so misalignment happened and slowed the team down. I led an auto-generation mechanism squat: backend continued defining schemas in Python, then we converted them into JSON Schema for more teams to use, and on my side, use another tool to convert JSON schema to TypeScript interfaces that we use in Frontend. After the mechanism became mature, we pushed further and automated more of the data node implementation. A bottleneck that used to slow the team down became more than 10 times faster. That impact was also recognized in my quarterly performance review, where I received the highest performance rating for driving this automation.
 >
-> The common thread is that no one directly told me to do these things in this way. I kept looking at different teams' workflows, asking what can be improved, testing the possibility with small demos or automation, and then turning useful experiments into real impact.
+> The common thread is that no one directly told me to do these things in any specific way. I kept looking at different teams' workflows, asking what can be improved, testing the possibility with small demos or automation, and then turning useful experiments into real impact.
 
 ## 追問準備
 
@@ -73,4 +76,4 @@ Proactive AI Workflow Discovery
 
 如果問「除了 AI workflow，還有其他 bias for action 的例子嗎」：
 
-> One example is schema auto-generation for xDS. Backend and frontend were maintaining related schemas separately, and misalignment became painful. I led a pipeline where backend schemas defined in Python could be converted into JSON Schema and then TypeScript interfaces. Later we automated more of the data node implementation as well. It turned a recurring team bottleneck into something more than 10 times faster.
+> One example is schema auto-generation for xDS. Backend and frontend were maintaining related schemas separately, and misalignment became painful. I led a pipeline where backend schemas defined in Python could be converted into JSON Schema and then TypeScript interfaces. Later we automated more of the data node implementation as well. It turned a recurring team bottleneck into something more than 10 times faster, and that impact was recognized with the highest quarterly performance rating.
