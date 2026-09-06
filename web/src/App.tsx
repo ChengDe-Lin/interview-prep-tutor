@@ -18,6 +18,17 @@ export default function App() {
   const page = view === 'home' ? undefined : pageById.get(view)
   const pageIndex = page ? guidePages.findIndex((item) => item.id === page.id) : -1
 
+  useEffect(() => {
+    const syncViewFromUrl = () => {
+      const id = window.location.hash.slice(1)
+      setView(pageById.has(id) ? id : 'home')
+      setSidebarOpen(false)
+      document.querySelector('.content-scroll')?.scrollTo({ top: 0 })
+    }
+    window.addEventListener('hashchange', syncViewFromUrl)
+    return () => window.removeEventListener('hashchange', syncViewFromUrl)
+  }, [])
+
   const filteredPages = useMemo(() => {
     const value = query.trim().toLowerCase()
     if (!value) return guidePages
