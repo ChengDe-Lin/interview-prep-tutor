@@ -252,10 +252,9 @@ export const guidePages: GuidePage[] = [
     focus: ['Close strong'],
     points: [
       { cue: '成功樣貌', text: <>When you think about the strongest FDEs on your team, what do they do differently—especially in their first six months?</> },
-      { cue: 'Build vs reuse', text: <>How does the team balance solving one customer’s immediate problem with turning the solution into something reusable for other customers or the Databricks product?</> },
-      { cue: 'Customer outcome', text: <>How do you measure success for an FDE engagement beyond delivering the initial solution—adoption, consumption, business outcome, or something else?</> },
-      { cue: 'Field → product', text: <>When FDEs discover repeated product gaps in the field, how does that feedback influence the core engineering and product roadmap?</> },
-      { cue: 'Current challenge', text: <>What is the most important technical or customer problem you want this hire to help the team solve?</> },
+      { cue: '最近的成功 engagement', text: <>Could you walk me through a recent FDE engagement that was particularly successful? What did the FDE do that made it work so well?</> },
+      { cue: '這次招人的需求', text: <>What is the most important technical or customer problem you want this hire to help the team solve in the next six to twelve months?</> },
+      { cue: 'Broader FDE impact', text: <>Beyond solving the immediate customer problem, how do you evaluate whether an FDE is creating broader impact? For example, do you look at whether they can identify recurring patterns across customers and help influence what Databricks builds into the core product?</> },
     ],
     reminders: ['依對話挑 2–3 題，不要全部問。', '如果面試中已談過某題，就換下一題。', '最後可問：「Is there anything in my background you’d like me to clarify before we close?」'],
   },
