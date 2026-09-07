@@ -1,24 +1,31 @@
 import { useEffect, useState } from 'react'
+import AppleGuide from './AppleGuide'
 import DatabricksGuide from './DatabricksGuide'
 import LegacyTutor from './LegacyTutor'
 
-function isDatabricksRoute() {
+type GuideRoute = 'apple' | 'databricks' | 'legacy'
+
+function activeRoute(): GuideRoute {
   const route = window.location.hash.slice(1)
-  return route === 'databricks' || route.startsWith('databricks/')
+  if (route === 'apple' || route.startsWith('apple/')) return 'apple'
+  if (route === 'databricks' || route.startsWith('databricks/')) return 'databricks'
+  return 'legacy'
 }
 
 export default function App() {
-  const [showDatabricksGuide, setShowDatabricksGuide] = useState(isDatabricksRoute)
+  const [route, setRoute] = useState<GuideRoute>(activeRoute)
 
   useEffect(() => {
-    const syncRoute = () => setShowDatabricksGuide(isDatabricksRoute())
+    const syncRoute = () => setRoute(activeRoute())
     window.addEventListener('hashchange', syncRoute)
     return () => window.removeEventListener('hashchange', syncRoute)
   }, [])
 
   useEffect(() => {
-    document.title = showDatabricksGuide ? 'Databricks FDE // Field Notes' : 'Interview Prep Tutor'
-  }, [showDatabricksGuide])
+    document.title = route === 'apple' ? 'Apple SRE // Interview Prep' : route === 'databricks' ? 'Databricks FDE // Field Notes' : 'Interview Prep Tutor'
+  }, [route])
 
-  return showDatabricksGuide ? <DatabricksGuide /> : <LegacyTutor />
+  if (route === 'apple') return <AppleGuide />
+  if (route === 'databricks') return <DatabricksGuide />
+  return <LegacyTutor />
 }

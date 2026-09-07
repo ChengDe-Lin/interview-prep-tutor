@@ -66,6 +66,10 @@ export default function LegacyTutor() {
             Databricks FDE Guide
           </button>
 
+          <button className="nav-item" onClick={() => { window.location.hash = 'apple' }}>
+            Apple SRE Guide
+          </button>
+
           {companies.length > 0 && (
             <>
               <div className="nav-section-header">Companies</div>
