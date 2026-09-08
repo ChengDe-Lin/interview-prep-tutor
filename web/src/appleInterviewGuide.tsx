@@ -35,9 +35,9 @@ export const appleGuidePages: AppleGuidePage[] = [
     focus: ['Final', 'Positioning'],
     points: [
       { cue: '現在是誰', text: <>Hi, I’m ChengDe, a Senior Software Engineer at ASUS Intelligent Cloud Service. For the past <mark className="metric">five years</mark>, I’ve built backend systems and healthcare platforms used across multiple hospitals. My role has grown from backend development into platform architecture, production reliability, and AI-assisted development.</> },
-      { cue: 'Backend foundation', text: <>I maintained around ten backend services and hundreds of APIs using Kubernetes, Redis, RabbitMQ, and databases. This gave me hands-on experience with <mark className="concept">how distributed systems behave and fail in production</mark>.</> },
+      { cue: 'Backend foundation', text: <>Early in my career, I maintained around ten backend services and hundreds of APIs using Kubernetes, Redis, RabbitMQ, and databases. That gave me hands-on experience with <mark className="concept">how distributed systems behave and fail in production</mark>.</> },
       { cue: 'Formal on-call + healthcare', text: <>I was also part of a <mark className="concept">formal production on-call duty</mark>, handling SLA failures, service crashes, and P0 clinical-data issues. Because doctors and nurses depended on these systems, reliability was directly connected to clinical work and patient safety.</> },
-      { cue: '怎麼 debug production', text: <>During incidents, I used Azure Application Insights, correlation IDs, and detailed disk logs to reconstruct the request flow. Then I decided whether we needed an immediate mitigation, a rollback, or a longer-term fix.</> },
+      { cue: '快速成長與認可', text: <>I was promoted to Senior Engineer in about <mark className="metric">two years</mark>, roughly half the usual timeline in my department. I also received both our <mark className="outcome">Code Champion Award and Peer Feedback Award</mark>, which recognized my technical contributions and cross-team collaboration.</> },
       { cue: '為何走向 platform', text: <>Later, I moved into platform architecture because our large, tightly connected product was creating production risk. A local change could break an unrelated workflow, and releases were becoming slower and harder to control.</> },
       { cue: 'Add-on Framework 設計', text: <>I led the design and migration of our Add-on Module Framework to create clear boundaries between features. Teams could build and deploy widgets independently, which <mark className="concept">reduced the impact of each change</mark> and made ownership clearer.</> },
       { cue: 'Add-on 實際結果', text: <>The platform now supports <mark className="metric">more than 300 independently deployable widgets and contributions from over fifteen engineers</mark>. During the migration quarter, delivery speed improved by 46%. More importantly for reliability, <mark className="outcome">defect age decreased by 58%</mark>, meaning known problems were fixed much faster. Those improvements have continued as the platform has grown.</> },
@@ -46,7 +46,7 @@ export const appleGuidePages: AppleGuidePage[] = [
       { cue: 'AI 的 quality assurance', text: <>In healthcare, AI is useful only if the result is safe and complete. I use controlled execution, requirement tracking, tests, metrics, and validation to keep the output <mark className="concept">stable, complete, and observable</mark>.</> },
       { cue: '結尾：我帶來什麼', text: <>Across all these projects, my goal has been the same: turn production problems into systems that are safer, easier to operate, and less likely to fail again. Although my formal title has been Software Engineer, <mark className="concept">reliability has shaped how I design, build, and operate systems</mark>. That is the experience and mindset <mark className="outcome">I would bring to an SRE role</mark>.</> },
     ],
-    reminders: ['這是 modular 三分鐘素材；全部講會超時，現場選六到八張。', '核心必講：現在是誰、formal on-call、Add-on、xDS、AI quality、共同主線。', 'Debug 流程與 Add-on 數字可依 recruiter 反應選講。'],
+    reminders: ['這是 modular 三分鐘素材；全部講會超時，現場選六到八張。', '核心必講：現在是誰、formal on-call、Add-on、xDS、AI quality、共同主線。', 'Add-on 數字可依 recruiter 反應選講。'],
   },
   {
     id: 'why-role', section: 'recruiter', nav: 'Why This Role / SRE', step: '02', title: 'Why this role, and why SRE?', duration: '75–90 sec',
@@ -126,34 +126,19 @@ export const appleGuidePages: AppleGuidePage[] = [
   },
   {
     id: 'questions', section: 'recruiter', nav: 'Questions to Ask', step: '08', title: 'Questions for the recruiter', duration: 'Ask 2–3',
-    purpose: '先問能影響你如何準備與判斷角色的問題；不要把 recruiter 當 technical interviewer。',
-    focus: ['Team context', 'Interview process'],
+    purpose: '只問 recruiter 真正掌握的資訊：hiring team 的 interest、面試流程、時程與行政條件。',
+    focus: ['Recruiter context', 'Interview process'],
     points: [
-      { cue: '1 · Loop 準備方向', text: <>Could you walk me through the interview process and the main areas each stage is designed to evaluate?</> },
-      { cue: '2 · 為何現在招人', text: <>What created the need for this position, and what are the most important problems the team hopes this person will help solve in the first six to twelve months?</> },
-      { cue: '3 · Role 實際比例', text: <>How does the team balance software and automation development with operational responsibilities such as on-call, incident response, and fleet maintenance?</> },
-      { cue: '4 · 成功背景', text: <>The role spans software, Kubernetes, and physical infrastructure. What backgrounds have helped people become successful on this team?</> },
-      { cue: '5 · On-call 細節', text: <>If you have visibility into it, how is the on-call rotation structured, and what has the recent paging volume been like?</> },
+      { cue: '1 · Hiring team 看中什麼', text: <>Since the hiring team has already reviewed my background, was there anything in my experience that particularly caught their attention or that they would like to explore further?</> },
+      { cue: '2 · Loop 與準備方向', text: <>Could you walk me through the interview process, what each stage is intended to evaluate, and which areas you would recommend I prepare for?</> },
+      { cue: '如果只說 technical interview', text: <>Would the technical rounds focus more on coding, Linux troubleshooting, system design, or discussion of my past experience?</>, note: '只有前一題得到的答案太籠統時才追問。' },
+      { cue: '3 · 下一步與時程', text: <>What would the next steps and expected timeline look like after this conversation?</>, note: '如果 recruiter 已主動說明，就不必再問。' },
+      { cue: '4 · Level 與 compensation', text: <>Could you share the expected level and the budgeted compensation range for this position in Singapore?</>, note: '適合在 recruiter 談到 level 或 compensation 時接著問，不必為了湊問題硬問。' },
     ],
-    reminders: ['先問一到兩題，再切到下一頁談另一個 Apple role。', 'On-call 若前面已討論就不要再問。', '深入 architecture、fleet size、failure mode 的問題留給 hiring manager。'],
+    reminders: ['時間只夠兩題就問第 1 和第 2 題。', 'Timeline 或 compensation 如果前面已經回答，不要重問。', 'Team problems、工作比例、成功背景、on-call 細節與 architecture 留給 hiring manager。'],
   },
   {
-    id: 'two-apple-roles', section: 'recruiter', nav: 'Two Apple Roles', step: '09', title: 'Ask about the other Apple role', duration: '2–3 min conversation',
-    purpose: '先問完一到兩個 recruiter 問題，再切到這頁。清楚表達：兩個職缺都真正有興趣，也各自有具體的 fit。',
-    focus: ['Recruiter routing', 'Two strong fits'],
-    points: [
-      { cue: '1 · 自然轉場', text: <>Before we finish, I’d also like to ask about <mark className="concept">another Apple role that I’m very interested in</mark>.</> },
-      { cue: '2 · 最有興趣的兩個', text: <>Among the Apple roles I’ve applied for, there are two that I’m especially interested in. One is this SRE role, and the other is the Senior Software Engineer, Infrastructure Applications role, number 200679802-3278. <mark className="outcome">I see both as strong fits for different parts of my experience.</mark></> },
-      { cue: '3 · SRE 為什麼 fit', text: <>The SRE role fits my production on-call experience, incident response, Kubernetes work, safe rollouts, and platform design focused on preventing failures. I also care deeply about owning the reliability of the whole system, not only completing the code.</> },
-      { cue: '4 · Infrastructure Applications 為什麼 fit', text: <>The Infrastructure Applications role closely matches my recent day-to-day work. I have built full-stack platform systems with web interfaces, backend APIs, Kubernetes, CI/CD, and cross-team collaboration. I also have direct experience building <mark className="concept">AI-assisted workflows with coding and design agents, orchestration, validation, and human control</mark>.</> },
-      { cue: '5 · 問 recruiter 怎麼進行', text: <>I’m genuinely interested in both opportunities. <mark className="concept">Would you recommend that I continue the two applications separately, or is there a way for the recruiting teams to consider my profile across both?</mark></> },
-      { cue: '如果問：比較偏好哪一個？', text: <>I’m interested in both, but for different reasons. SRE connects strongly with my production and reliability experience, while Infrastructure Applications maps closely to my recent platform and AI-assisted development work. What connects them is the opportunity to build <mark className="outcome">foundational systems with meaningful impact at scale</mark>. I’d like to understand both teams and where my experience could create the most value.</> },
-      { cue: '如果問：為什麼投了幾個？', text: <>My background covers backend engineering, platform architecture, production reliability, and AI-assisted development. I only applied to roles where I saw a clear connection to my experience and career direction. Among them, <mark className="outcome">these are the two I’m most interested in</mark>.</>, note: '只有被直接問申請了多少職缺或為什麼投多個時才講。' },
-    ],
-    reminders: ['不要一開始就談另一個職缺；先完成正常 recruiter conversation。', '不要說其中一個是 backup，也不要說哪個都可以。', '主動講到第 5 張就停；最後兩張只有被追問才用。'],
-  },
-  {
-    id: 'rapid-followups', section: 'recruiter', nav: 'Rapid Follow-ups', step: '10', title: 'Recruiter rapid follow-ups', duration: '30–45 sec each',
+    id: 'rapid-followups', section: 'recruiter', nav: 'Rapid Follow-ups', step: '09', title: 'Recruiter rapid follow-ups', duration: '30–45 sec each',
     purpose: '每題只給一個清楚結論和一到兩個證據；不要展開成 technical deep dive。',
     focus: ['Short answers', 'Recruiter level'],
     points: [
@@ -168,7 +153,7 @@ export const appleGuidePages: AppleGuidePage[] = [
     reminders: ['About Me、Why This Role、Why Apple：Final。', 'Production/On-call、Logistics：Verified。', 'xCraft/xDesign 數字與 technical details：Draft until explicitly confirmed。', 'Technical Gaps：Use only when asked。'],
   },
   {
-    id: 'recruiter-mock', section: 'recruiter', nav: '25-min Mock', step: '11', title: '25-minute recruiter mock sequence', duration: '20–30 min',
+    id: 'recruiter-mock', section: 'recruiter', nav: '25-min Mock', step: '10', title: '25-minute recruiter mock sequence', duration: '20–30 min',
     purpose: '按照 recruiter 最可能的順序練習；follow-up 只停留在動機、範圍和可信度，不進 technical deep dive。',
     focus: ['Mock flow', 'Tomorrow'],
     points: [
@@ -179,7 +164,7 @@ export const appleGuidePages: AppleGuidePage[] = [
       { cue: '5 · Production and on-call', text: <>Stop after the diagnosis path, hospital deployments, promotion, and award unless asked for more. Possible follow-ups: “Are you comfortable with on-call?” and “Can you give one incident example?”</> },
       { cue: '6 · One résumé follow-up', text: <>Be ready for the Add-on Platform, current AI work, patents, senior-level scope, or your strongest technical match. Keep the first answer under 45 seconds.</> },
       { cue: '7 · Logistics', text: <>Answer Singapore PR, one-month notice, compensation, and other interviews briefly. Possible follow-ups: “Do you need sponsorship?” and “What range are you targeting?”</> },
-      { cue: '8 · Your questions', text: <>Ask one or two normal recruiter questions first. Then move to the Two Apple Roles page and ask how the SRE and Infrastructure Applications applications should proceed.</> },
+      { cue: '8 · Your questions', text: <>Ask what caught the hiring team’s attention and how each interview stage will be evaluated. Ask about timeline or compensation only if the recruiter has not already covered it.</> },
     ],
   },
   {
