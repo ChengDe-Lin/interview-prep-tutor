@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react'
 
-export type AppleGuideSection = 'recruiter' | 'stories' | 'sre' | 'close'
+export type AppleGuideSection = 'hm' | 'recruiter' | 'stories' | 'sre' | 'close'
 
 export interface AppleTalkingPoint {
   cue: string
@@ -22,13 +22,132 @@ export interface AppleGuidePage {
 }
 
 export const appleSectionLabels: Record<AppleGuideSection, string> = {
-  recruiter: 'Tomorrow · Recruiter screen',
+  hm: 'Hiring Manager · 30 min',
+  recruiter: 'Recruiter screen · reference',
   stories: 'Reusable story bank',
   sre: 'SRE technical preparation',
   close: 'Final review',
 }
 
 export const appleGuidePages: AppleGuidePage[] = [
+  {
+    id: 'hm-about-me', section: 'hm', nav: 'HM · About Me', step: 'HM1', title: 'Tell me about yourself', duration: 'About 3 min',
+    purpose: '先建立一條清楚主線：backend 與 production 基礎 → reliability-driven platform architecture → controlled automation → 為何適合這個 team。',
+    focus: ['HM opening', 'Reliability by design'],
+    points: [
+      { cue: '現在是誰', text: <>Hi, I’m ChengDe. I’m currently a Senior Software Engineer at ASUS Intelligent Cloud Service. For the past <mark className="metric">five years</mark>, I’ve worked on backend systems and healthcare platforms used across multiple hospitals. My work has grown from backend development into platform architecture, production reliability, and AI-assisted development.</> },
+      { cue: 'Backend 與 production 基礎', text: <>Earlier in my career, I maintained around ten backend services and hundreds of APIs using Kubernetes, Redis, RabbitMQ, and databases. I also had formal production duty, handling SLA failures, service crashes, and urgent clinical-data issues. That taught me that <mark className="concept">reliability is part of the product</mark>, especially when doctors and nurses depend on it.</> },
+      { cue: '為何轉向 platform', text: <>Later, I moved into platform architecture because I wanted to prevent problems instead of only fixing them after they happened. Our main healthcare application had become tightly connected. One local change could affect an unrelated workflow, releases were difficult to control, and the risk grew as the product became larger.</> },
+      { cue: 'Add-on Framework', text: <>I led the design and migration of our Add-on Module Framework. We created clear boundaries so teams could build and deploy features more independently, while the platform still controlled shared contracts, patient context, testing, and how modules were loaded. The goal was to <mark className="concept">reduce hidden dependencies and limit the impact of each change</mark>.</> },
+      { cue: 'Scale 與結果', text: <>The platform now supports <mark className="metric">more than 300 independently deployable widgets and contributions from over fifteen engineers</mark>. During the migration quarter, delivery speed improved by 46%. More importantly for reliability, <mark className="outcome">defect age decreased by 58%</mark>, so known problems were being fixed much faster.</> },
+      { cue: 'xDS 與 healthcare safety', text: <>I also helped design xDS, a shared patient-context and clinical-data layer. Every feature needed to use the correct patient and encounter data, so consistency was directly connected to safety. That design improved the reliability of the whole platform and became part of <mark className="outcome">a patent granted by the Taiwan Intellectual Property Office</mark>.</> },
+      { cue: '最近的 automation', text: <>More recently, I built xCraft and xDesign, an AI-assisted workflow that connects design and coding agents directly to our product framework. Because this is healthcare software, speed was never enough. I added requirement tracking, tests, limited permissions, visible execution state, and clear stop conditions so the automation would be <mark className="concept">controlled, observable, and safe to review</mark>.</> },
+      { cue: '收回 Apple role', text: <>The common theme in my work is using software engineering to make complex systems safer and easier to manage. That is why this role interests me. The physical fleet is a new domain for me, but <mark className="outcome">platform boundaries, automation, validation, and safe change</mark> are already central to how I work, and I want to apply that experience at Apple’s infrastructure scale.</> },
+    ],
+    reminders: ['不用把 on-call 當主角；它只證明 production judgment。', '必講 Add-on、46% / 58%、xDS safety、automation controls、Apple bridge。', '若被打斷，直接回答追問，不必回來補完每張卡。'],
+  },
+  {
+    id: 'hm-fit', section: 'hm', nav: 'HM · Why You / This Team', step: 'HM2', title: 'Why this team, and why are you a fit?', duration: '90 sec',
+    purpose: '對準 recruiter 已確認的 team 模式：不是靠 on-call 證明 fit，而是用 infrastructure software、automation 和 reliability by design。',
+    focus: ['Role fit', 'Platform automation'],
+    points: [
+      { cue: '我怎麼理解這個 team', text: <>What interests me about this team is that reliability is built through <mark className="concept">software, automation, and safe infrastructure workflows</mark>. The problem is not only keeping one service available. It is making a large Apple Silicon fleet easier to provision, validate, update, and manage safely.</> },
+      { cue: '我的直接連結', text: <>That is close to the work I have been doing at a different layer. I take systems with hidden dependencies or repeated manual work and turn them into platforms with clear ownership, controlled execution, and reusable tools.</> },
+      { cue: '證據一：safe change', text: <>In the Add-on Framework, I separated a tightly connected application into independently deployable units while keeping shared data and contracts under platform control. That made changes easier to isolate and gave teams more independence without giving up safety.</> },
+      { cue: '證據二：reliable automation', text: <>In my AI work, I learned that automation is only useful when it is observable and controlled. I added validation, limited file access, iteration limits, and human review at clear boundaries. The technology is different, but the engineering pattern is the same: <mark className="outcome">automate the normal path without losing control</mark>.</> },
+      { cue: '誠實處理 gap', text: <>I have not yet operated a hyperscale physical-server fleet, so I would not pretend that part is already familiar. My Kubernetes deployment experience is also from around two to three years ago. What I bring most directly today is <mark className="concept">platform architecture, controlled automation, production judgment, and ownership of shared infrastructure</mark>.</> },
+      { cue: '結尾', text: <>I see this as a chance to bring a proven way of thinking into a deeper infrastructure domain: define the lifecycle clearly, make state visible, make every operation safe to retry, and keep failures from spreading across the system.</> },
+    ],
+    reminders: ['不要說成 career switch；說 same engineering pattern at a deeper infrastructure layer。', '不要主動列 PXE / BIOS / TPM 全部 gap；被問時再展開。', '不要提 Apple team 有 on-call。Recruiter 已說明這個 team 不需要。'],
+  },
+  {
+    id: 'hm-addon-deep', section: 'hm', nav: 'HM · Add-on Deep Dive', step: 'HM3', title: 'Deep dive: Building a safer platform', duration: '3–4 min primary story',
+    purpose: 'Apple HM 的第一主故事。證明 architecture ownership、safe boundaries、migration、adoption、measured reliability impact。',
+    focus: ['Primary story', 'Architecture', 'Safe change'],
+    points: [
+      { cue: '一句話開場', text: <>The project that best shows how I think about reliability is our Add-on Module Framework. I helped turn a large, tightly connected healthcare application into <mark className="concept">a platform with clear data, code, and deployment boundaries</mark>.</> },
+      { cue: '原本的問題', text: <>Our outpatient product covered many healthcare workflows, but too much of it lived inside one large frontend. A change in one area could break something unrelated, builds and releases took longer, and new engineers needed a lot of context before they could make a safe change.</> },
+      { cue: '為何是 reliability 問題', text: <>This was not only a developer-productivity problem. In one near miss, a change in a prescription-copying workflow nearly reused medication from the previous patient. In healthcare, a hidden dependency can become <mark className="concept">a patient-safety risk</mark>.</> },
+      { cue: '我的 ownership', text: <>This was the first large architecture problem I owned after joining the platform team. I reviewed the options, chose the direction, built the first working version and the framework, and then helped drive the migration across engineering teams.</> },
+      { cue: '先拆兩種 coupling', text: <>I realized we had to separate two different problems. First, every feature still depended on shared patient data. Second, the feature code was still built and released together. Splitting only the UI would have moved the coupling instead of removing it.</> },
+      { cue: '先做 xDS', text: <>We first built xDS as one shared patient-context and clinical-data layer. Widgets used the same patient and encounter context instead of fetching and combining data in different ways. This gave independent features <mark className="outcome">one safe and consistent view of the patient</mark>.</> },
+      { cue: 'xDS major versions 共存', text: <>xDS is a package inside the product shell, not a separate service. When we introduced breaking changes, a version-two shell could run several major-version data trees at the same time. Each widget used the matching client and communicated with the correct tree through socket events, so <mark className="concept">version-one and version-two widgets could run together</mark>.</> },
+      { cue: '控制 multi-version 成本', text: <>We agreed to support at most <mark className="metric">three major versions</mark>, because more versions would create too much memory and maintenance cost. Data nodes were created only when a widget used them, and xDS did not fetch or watch an unused version. This kept the compatibility layer from loading every version of every data node.</> },
+      { cue: '驗證新舊資料', text: <>During staged testing, we ran a comparison script across the old and new data trees. It listed every field that differed, and we reviewed whether the difference was expected, caused by a known breaking change, or showed that unrelated data had changed. We chose focused comparison instead of continuous logging because the clinical-data volume would have produced too many logs.</> },
+      { cue: 'Widget-level version control', text: <>Within a version-two shell, a widget could adopt the newer client while other widgets continued using version one. If a version-two widget needed to move back, we could change its deployment configuration to load the previous remote-module version. That let us <mark className="concept">change one widget version without rolling back the shared shell</mark>.</> },
+      { cue: 'Production 使用現況', text: <>This compatibility design is used across <mark className="metric">five healthcare sites</mark>. Some sites started with version one and have stayed there. Other sites started with a version-two shell and can still choose version-one widgets. The 300-plus widgets therefore include a mix of version-one and version-two clients.</> },
+      { cue: '不要誇大 rollout', text: <>We have not yet upgraded an existing hospital from a version-one shell to version two in place, so I would not describe this as a completed hospital-wide migration. What production has validated is <mark className="outcome">mixed-version widget compatibility inside the version-two environment</mark>, without a production incident caused by that coexistence.</> },
+      { cue: '再拆 code 與 deployment', text: <>Then we created the Add-on Module Framework. I chose Module Federation because separately built features still needed to appear inside the same product. The main application became a shell that could discover and load modules while each team owned its own build and release.</> },
+      { cue: '平台吸收複雜度', text: <>The developer should focus on the feature. The platform handled how a module was connected, loaded, updated, and deployed. It also gave modules one data-access interface, whether they ran inside the main page or as a separate Electron-hosted widget.</> },
+      { cue: '補回 integration confidence', text: <>Independent development created a new risk: a developer could no longer see the whole application locally. We built xEmulator, a test version of the shell where teams could run a widget with realistic shared data and cross-widget behavior before release.</> },
+      { cue: '避免 big bang', text: <>We did not migrate everything at once. We tested new features first, then tried both independent pages and modules inside the main product. After those pilots were stable, we selected existing features with clear boundaries for the first migration.</> },
+      { cue: '最難不是 technology', text: <>The hardest part was getting the organization to accept the transition cost. Teams and PMs had to slow some roadmap work before they could see the long-term benefit. I built working pilots first, so the discussion changed from “can this work?” to <mark className="concept">“is the benefit worth the migration cost?”</mark>.</> },
+      { cue: '擴大 migration', text: <>Once the direction was approved, each feature owner planned how to separate their own area. I reviewed the plans and difficult cases to keep the boundaries consistent. That let the people with the most domain knowledge lead the migration without making the platform team the bottleneck.</> },
+      { cue: '量化結果', text: <>During the migration quarter, even while engineers were learning the framework, delivery speed improved by <mark className="metric">46%</mark>. More importantly, defect age decreased by <mark className="metric">58%</mark>. The platform has since grown to more than 300 independently deployable widgets with contributions from over fifteen engineers.</> },
+      { cue: 'Apple relevance', text: <>The scale and domain are different, but the lesson transfers directly to infrastructure: define clear ownership, keep shared contracts under control, roll out in stages, validate the real system, and make one failure easier to isolate instead of allowing it to spread.</> },
+    ],
+    reminders: ['Ditto 是 near miss，不能說真的傷害病患。', '46% / 58% 是 Add-on migration quarter 的 Jira review；不要和 xDS shell upgrade 混在一起。', 'xDS production 證明的是 v2 shell 裡 mixed-version widgets 共存；尚未做既有醫院的 v1 → v2 shell in-place upgrade。', 'xDS 與 xEmulator patents 已 granted；Add-on patent application 仍 pending。', 'HM 若追技術選型，再展開 Module Federation / iframe trade-off。'],
+  },
+  {
+    id: 'hm-xcraft-deep', section: 'hm', nav: 'HM · Automation Deep Dive', step: 'HM4', title: 'Deep dive: Building controlled automation', duration: '3 min secondary story',
+    purpose: '第二主故事。保留 Databricks 版完整邏輯，但把重點放在 reliable automation、permissions、observable state 和 stop conditions。',
+    focus: ['Automation', 'Guardrails', 'System boundaries'],
+    points: [
+      { cue: '一句話開場', text: <>Another project I’m proud of is xCraft and xDesign, an AI-assisted product-development system I designed and built on top of our Add-on Framework.</> },
+      { cue: '真正的 challenge', text: <>The question was not whether an agent could write frontend code. The output had to follow our architecture and design system, remain maintainable, and include every required piece of clinical logic. In healthcare, <mark className="concept">a result that mostly works is not enough</mark>.</> },
+      { cue: '我的架構', text: <>I built xCraft as an orchestration layer around coding agents. It breaks work into tasks, retrieves the right project knowledge, gives work to focused agents, tracks execution state, runs tests, and checks the result before it can move forward.</> },
+      { cue: 'Requirement Atomizer', text: <>One component I built is the Requirement Atomizer. It breaks a long requirement into small items, gives each one a tag, and connects those tags to the relevant code. The system can then detect when the agent may have silently skipped an item. <mark className="concept">It checks coverage, not correctness</mark>, so tests and review are still required.</> },
+      { cue: '第一個結果', text: <>xCraft has automatically delivered close to <mark className="metric">one hundred real features</mark>. But that success exposed the next bottleneck: engineering became faster, while design capacity stayed the same.</> },
+      { cue: '第一個 assumption 錯了', text: <>My first idea was to let designers send work to the normal xCraft workflow. That was wrong. Engineers could wait for one nearly finished result, but designers needed rough versions they could compare and change quickly.</> },
+      { cue: '改 workflow，不改 user', text: <>I extracted the reusable skills, added design-specific steps, and created a lighter workflow for fast iteration. It still worked directly on our real framework and component library, so the selected result was already product code rather than a prototype an engineer had to rebuild.</> },
+      { cue: '用 architecture 隔離責任', text: <>At first, the design workflow and the main coding workflow could both change the UI. Instructions alone did not stop one side from changing the other side’s work. I rewrote the architecture so they could access <mark className="concept">different sets of files</mark>. The boundary was enforced by the system, not only by a prompt.</> },
+      { cue: '建立 xDesign', text: <>Designers still had to drive every small iteration, so I built xDesign for the repeatable part of their workflow. It asks xCraft for several real versions, reviews the rendered results, and sends a focused refinement task while designers keep the important choices.</> },
+      { cue: 'Stop conditions', text: <>The loop has clear limits. If the agents cannot agree, go over the iteration limit, or have low confidence, the workflow stops and sends the work to a person. <mark className="outcome">Human review is an explicit system boundary</mark>, not an emergency fix added later.</> },
+      { cue: '目前結果', text: <>At the moment, xDesign has completed around <mark className="metric">15 to 20 design tasks</mark> that our designers reviewed and approved. For those common and well-understood tasks, they estimate roughly 90% less manual work.</> },
+      { cue: 'Apple relevance', text: <>The lesson I would bring to infrastructure automation is simple: speed is not enough. Automation needs limited permissions, visible state, safe retries, validation, stop conditions, and a clear path to human review when the system is uncertain.</> },
+    ],
+    reminders: ['15–20 與 90% 的 scope 必須一起說。', '主題不是 AI 很厲害；主題是如何控制不確定的 automation。', '若被問 failure：wrong designer workflow 或 UI/logic boundary 做太晚。'],
+  },
+  {
+    id: 'hm-production-evidence', section: 'hm', nav: 'HM · Production Deep Dive', step: 'HM5', title: 'Production deep dive—and honest boundaries', duration: '2–3 min + follow-ups',
+    purpose: '用 cache-refresh incident 證明 mitigation、root cause、observability 與 reflection；再清楚交代 Kubernetes 經驗的時間和 ownership boundary。',
+    focus: ['Production', 'Observability', 'Reflection'],
+    points: [
+      { cue: '已知：正式 production responsibility', text: <>During my first two years, I had formal production duty for around ten backend services. I handled SLA failures, service crashes, and P0 cases where clinical data was missing or not updated correctly.</> },
+      { cue: '已知：診斷流程', text: <>We kept the most important logs in Azure Application Insights. I would start there, find the correlation ID, retrieve detailed logs from disk storage, and reconstruct the request path before deciding what to change.</> },
+      { cue: 'Incident · cache 的用途', text: <>One incident involved a cache used by a clinical search service. Some requests required complex database queries, so a scheduled job prepared the data in advance and refreshed the cache regularly.</> },
+      { cue: '為何原本需要 TTL', text: <>The refresh logic updated the people returned by the query. If someone had been removed from the source, that person was no longer returned, so the job did not know that the old cache entry should be deleted. We used a relatively short TTL to make those old entries disappear instead of allowing a removed person to remain searchable.</> },
+      { cue: 'Incident · dependency failure', text: <>The refresh job also depended on an upstream API. When that API kept failing, the cache was not refreshed. Because the short TTL kept running, the valid cache entries eventually expired as well. Requests fell back to the much slower database path, and users started seeing widespread timeouts.</> },
+      { cue: '為何沒有提早發現', text: <>At that time, our alerts focused on service errors and response time. We did not directly check whether the cache had been refreshed recently, so <mark className="concept">the first strong signal came too late, after user requests became slow</mark>.</> },
+      { cue: 'Immediate mitigation', text: <>We had not kept another cache version that we could switch back to. I prepared a temporary change that increased the request timeout, and we deployed it immediately to reduce the impact while we restored the data path. I treated that as mitigation, not the final fix.</> },
+      { cue: 'Permanent fix · 不再靠 TTL 清理', text: <>After the incident, we reviewed why the TTL existed and changed the refresh logic. The job first listed the existing cache entries, then completed the source query and updated the current results. Only after a successful query did it delete entries that were no longer present. That meant <mark className="outcome">correct deletion no longer depended on cache expiration</mark>, so we could remove the TTL.</> },
+      { cue: '我做的 observability improvements', text: <>I also added the last successful refresh time and improved logs around the upstream API. I defined a log query that detected when the last update was older than the allowed age.</> },
+      { cue: '和 DevOps 的 boundary', text: <>I gave that query and condition to DevOps, and they connected it to the production alerting pipeline. <mark className="outcome">I owned making the failure observable</mark>; DevOps owned the alerting infrastructure and notification.</> },
+      { cue: '現在回看會再改善什麼', text: <>Looking back on that incident, I would make the refresh even safer by building a complete new cache snapshot separately, validating it, and switching to it in one step. Our revised logic removed the TTL failure, but an atomic snapshot swap would make partial-update behavior easier to control as well.</> },
+      { cue: 'Incident lesson', text: <>The main lesson was that a healthy endpoint does not mean the whole dependency chain is healthy. For a precomputed data path, <mark className="concept">freshness is a reliability signal</mark>, and it should be monitored before users feel the failure.</> },
+      { cue: '已知：shared platform risk', text: <>My current work is on shared platform infrastructure. I see fewer feature-level incidents, but a defect in the shared layer can affect many applications. That makes staging checks, regression coverage, compatibility, and safe rollout part of my normal engineering decisions.</> },
+      { cue: '已知：mitigation judgment', text: <>In the Electron cache case, I introduced rotating ports to reduce the immediate user risk, but I did not call it a root-cause fix. I kept the remaining uncertainty visible because <mark className="concept">mitigation and root-cause correction are different claims</mark>.</> },
+      { cue: '已知：較早期 Kubernetes 經驗', text: <>Around two to three years ago, when I was working more directly on backend services, the development team owned the Kubernetes Deployment, Service, and Ingress definitions. Environment variables were managed through a separate configuration repository. After changes were merged, CI/CD deployed them automatically to development and staging, where we validated the service before production.</> },
+      { cue: '清楚的 ownership boundary', text: <>The DevOps team owned the Kubernetes clusters and the final production deployment. My experience was with application manifests, automated dev and staging deployment, and pre-production validation. <mark className="concept">It is real experience, but it is not my current day-to-day work</mark> and it was not production cluster operations.</> },
+      { cue: 'Optional · Kubernetes troubleshooting', text: <>A concrete Kubernetes troubleshooting example from about three years ago would strengthen the answer, but do not invent one. If no clear case comes back, use the exact deployment boundary above and move to a production example you remember well.</>, note: '可以請同事幫忙回想，但只能講你本人確實參與過的事件。' },
+      { cue: '待補 4 · repeat failure prevention', text: <>We need one case where an incident or near miss changed the platform: what failed, what the immediate response was, and what permanent automation, validation, or architecture change prevented the same class of problem.</>, note: 'Add-on near miss 可能可以補完整，但需要事件時間線與你實際做的 change。' },
+    ],
+    reminders: ['這個 team 沒有 on-call；不要把 production duty 說成應徵主因。', 'HM 仍可能用 production questions 驗證 judgment、debugging 和 safe change。', '缺口卡不是面試稿；補完真實內容後再改成 spoken answer。'],
+  },
+  {
+    id: 'hm-questions', section: 'hm', nav: 'HM · Questions', step: 'HM6', title: 'Questions for the Hiring Manager', duration: 'Choose 3',
+    purpose: '先理解 team 的 ownership boundary、目前 bottleneck 和成功標準；不要把 30 分鐘耗在官網可查的問題上。',
+    focus: ['Team discovery', 'Role clarity'],
+    points: [
+      { cue: '1 · 為何現在招人', text: <>What created the need for this role, and what are the most important problems you hope this person can help solve in the first six to twelve months?</> },
+      { cue: '2 · Team ownership', text: <>The recruiter mentioned that this team does not have an on-call responsibility. How is ownership divided between the team that builds the provisioning and fleet-management platform and the teams that operate it day to day?</> },
+      { cue: '3 · 現在的 bottleneck', text: <>Across the server lifecycle—from inventory and provisioning to validation, updates, repair, and replacement—where is the largest engineering bottleneck today?</> },
+      { cue: '4 · Software vs domain knowledge', text: <>For someone joining this team, which matters more in the first few months: experience building platform software, or existing knowledge of bare-metal fleet operations?</> },
+      { cue: '5 · Reliability 定義', text: <>How does the team measure whether the platform is becoming more reliable? Which signals or outcomes matter most?</> },
+      { cue: '6 · 成功的人', text: <>When you think about engineers who have been especially successful on this team, what do they do differently?</> },
+    ],
+    reminders: ['時間有限優先問 1、2、3。', '若對方已說清 ownership boundary，就把第 2 題換成第 5 題。', '問題的目的也是讓你判斷實際工作是否符合期待。'],
+  },
   {
     id: 'about-me', section: 'recruiter', nav: 'About Me', step: '01', title: 'Tell me about yourself', duration: '3 min · choose the cards you need',
     purpose: 'Final modular version。每張卡都能多講一點；依現場時間選六到八張，不必全部念完。',
@@ -103,7 +222,7 @@ export const appleGuidePages: AppleGuidePage[] = [
     purpose: 'Only answer this when asked. Do not volunteer the full gap list during Why SRE。',
     focus: ['Use only when asked', 'Self-awareness'],
     points: [
-      { cue: '先說 strongest match', text: <>My strongest match is in <mark className="concept">backend systems, Kubernetes deployments, platform automation, production debugging, and safe rollout</mark>. I have owned production services and built shared systems used across multiple hospitals.</> },
+      { cue: '先說 strongest match', text: <>My strongest match is in <mark className="concept">backend systems, platform automation, production debugging, and safe rollout</mark>. I have owned production services and built shared systems used across multiple hospitals. I also have earlier Kubernetes application-deployment experience from around two to three years ago.</> },
       { cue: 'Specific domain gap', text: <>The area where I would need the most learning is physical-server provisioning and hardware bootstrap, including PXE, BIOS, TPM, and secure boot. I also have not built Kubernetes operators or controllers in production.</> },
       { cue: '正確定位', text: <>This is <mark className="outcome">a domain-specific gap, not an absence of production or reliability experience</mark>. The reliability mindset, debugging process, automation, and production ownership are already central parts of my work.</> },
       { cue: '用證據證明能學', text: <>I have taken ownership of unfamiliar infrastructure before. When the owner of our Electron container left, I had about three weeks to take over the base platform used by applications in five hospitals. I learned it, maintained it in production, and continued developing it.</> },
@@ -135,7 +254,7 @@ export const appleGuidePages: AppleGuidePage[] = [
       { cue: '3 · 下一步與時程', text: <>What would the next steps and expected timeline look like after this conversation?</>, note: '如果 recruiter 已主動說明，就不必再問。' },
       { cue: '4 · Level 與 compensation', text: <>Could you share the expected level and the budgeted compensation range for this position in Singapore?</>, note: '適合在 recruiter 談到 level 或 compensation 時接著問，不必為了湊問題硬問。' },
     ],
-    reminders: ['時間只夠兩題就問第 1 和第 2 題。', 'Timeline 或 compensation 如果前面已經回答，不要重問。', 'Team problems、工作比例、成功背景、on-call 細節與 architecture 留給 hiring manager。'],
+    reminders: ['時間只夠兩題就問第 1 和第 2 題。', 'Timeline 或 compensation 如果前面已經回答，不要重問。', 'Team problems、工作比例、成功背景、ownership boundary 與 architecture 留給 hiring manager。'],
   },
   {
     id: 'rapid-followups', section: 'recruiter', nav: 'Rapid Follow-ups', step: '09', title: 'Recruiter rapid follow-ups', duration: '30–45 sec each',
@@ -147,7 +266,7 @@ export const appleGuidePages: AppleGuidePage[] = [
       { cue: '為何 SRE，不繼續 AI？', text: <>My recent AI work is also platform and reliability work. The hard part is not calling a model. It is controlling execution, validating outputs, making state visible, and designing safe handoffs. The technology changed, but the pattern stayed the same: <mark className="concept">build reliable automation around an uncertain system</mark>.</> },
       { cue: '什麼讓你是 senior-level？', text: <>For me, senior-level work means owning more than the code. I define architecture, make production trade-offs, align engineers and PMs, help other teams migrate, and stay responsible for whether the system is actually adopted and safe to operate.</> },
       { cue: '簡述 patents', text: <>The patents are part of one platform plan. xDS keeps patient context consistent across independent features, and xEmulator makes integration testing repeatable; both received granted Taiwan patents. The Add-on Module Framework connects those ideas into independently deployable features, and that patent application is still pending.</> },
-      { cue: '最強 technical match？', text: <>My strongest match is building and operating backend and platform systems: Kubernetes deployments, production debugging, automation, safe rollout, and reducing hidden dependencies so failures are easier to isolate.</> },
+      { cue: '最強 technical match？', text: <>My strongest match is building backend and shared platform systems: production debugging, automation, safe rollout, and reducing hidden dependencies so failures are easier to isolate. I have Kubernetes application-deployment experience, but that work was around two to three years ago.</> },
       { cue: '最需要學什麼？', text: <>The largest learning area is physical-server provisioning and hardware bootstrap at fleet scale. That includes PXE, BIOS, TPM, secure boot, and production controller development. It is a specific infrastructure domain gap, while my production and reliability foundation is already strong.</> },
     ],
     reminders: ['About Me、Why This Role、Why Apple：Final。', 'Production/On-call、Logistics：Verified。', 'xCraft/xDesign 數字與 technical details：Draft until explicitly confirmed。', 'Technical Gaps：Use only when asked。'],
@@ -155,7 +274,7 @@ export const appleGuidePages: AppleGuidePage[] = [
   {
     id: 'recruiter-mock', section: 'recruiter', nav: '25-min Mock', step: '10', title: '25-minute recruiter mock sequence', duration: '20–30 min',
     purpose: '按照 recruiter 最可能的順序練習；follow-up 只停留在動機、範圍和可信度，不進 technical deep dive。',
-    focus: ['Mock flow', 'Tomorrow'],
+    focus: ['Mock flow', 'Recruiter'],
     points: [
       { cue: '1 · Tell me about yourself', text: <>Use the modular About Me cards for around three minutes. Possible follow-ups: “Which project best represents your work?” and “How large is the platform today?”</> },
       { cue: '2 · Why this role?', text: <>Lead with direct SRE evidence. Possible follow-ups: “Why move now?” and “Which parts of your current work overlap most with SRE?”</> },
@@ -322,7 +441,7 @@ export const appleGuidePages: AppleGuidePage[] = [
       { cue: 'Software side', text: <>The role wants an engineer who builds services and tools: automation, reliability instrumentation, operational workflows, and ways to eliminate repeated manual work.</> },
       { cue: 'Fleet side', text: <>The unfamiliar side is large-scale server provisioning and lifecycle management: inventory, bootstrap, configuration, health, repair, capacity, and safe replacement across a fleet.</> },
       { cue: 'System foundation', text: <>The expected foundation includes Linux, networking, Kubernetes internals, DNS and DHCP, monitoring, distributed-system failure, and the interaction between hardware, operating systems, and software.</> },
-      { cue: 'Your strongest match', text: <>Your strongest evidence is platform software, automation, Kubernetes deployment, production diagnosis, rollout thinking, dependency isolation, and cross-team adoption.</> },
+      { cue: 'Your strongest match', text: <>Your strongest current evidence is platform software, automation, production diagnosis, rollout thinking, dependency isolation, and cross-team adoption. Kubernetes application deployment is supporting experience from around two to three years ago, not a current strength.</> },
       { cue: 'Your real gaps', text: <>The clearest gaps are bare-metal provisioning, hardware bootstrap and security, fleet configuration tooling, Kubernetes operators/controllers, and experience with hyperscale failure and capacity.</> },
       { cue: 'Priority order', text: <>Prepare in this order: <mark className="outcome">Linux triage → networking → SRE reliability concepts → Kubernetes internals → fleet lifecycle → Apple Silicon fleet design</mark>.</> },
     ],
@@ -416,7 +535,7 @@ export const appleGuidePages: AppleGuidePage[] = [
     reminders: ['順序：requirements → lifecycle/data model → components → safety → failures → observability → scale。', '不要一開始就列產品名；先說需要什麼能力。', '對 unfamiliar hardware 細節，可以說假設並請 interviewer 校準。'],
   },
   {
-    id: 'final-review', section: 'close', nav: 'Tonight / Tomorrow', step: '✓', title: 'What to prepare before the recruiter call', duration: 'Priority order',
+    id: 'final-review', section: 'close', nav: 'Recruiter Checklist', step: '✓', title: 'Recruiter-screen reference checklist', duration: 'Reference',
     purpose: '今晚不是把 SRE 全讀完；先讓明天 HR 的每個答案都能自然說出口。',
     focus: ['Execution plan'],
     points: [

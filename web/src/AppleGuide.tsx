@@ -3,7 +3,7 @@ import { appleGuidePages, applePageById, appleSectionLabels } from './appleInter
 import type { AppleGuidePage, AppleGuideSection } from './appleInterviewGuide'
 
 type View = 'home' | string
-const sections: AppleGuideSection[] = ['recruiter', 'stories', 'sre', 'close']
+const sections: AppleGuideSection[] = ['hm', 'recruiter', 'stories', 'sre', 'close']
 
 function initialView(): View {
   const route = window.location.hash.slice(1)
@@ -66,10 +66,10 @@ export default function AppleGuide() {
     <header className="mobile-header"><button onClick={() => setSidebarOpen(true)}>☰</button><strong>Apple SRE Prep</strong></header>
     {sidebarOpen && <button className="scrim" onClick={() => setSidebarOpen(false)} aria-label="Close menu" />}
     <aside className={`sidebar ${sidebarOpen ? 'is-open' : ''}`}>
-      <button className="brand" onClick={() => navigate('home')}><strong>Apple SRE</strong><span>Tomorrow · Recruiter Conversation</span></button>
+      <button className="brand" onClick={() => navigate('home')}><strong>Apple SRE</strong><span>Hiring Manager · 30-minute conversation</span></button>
       <div className="search-wrap"><input ref={searchRef} value={query} onChange={(event) => setQuery(event.target.value)} placeholder="搜尋頁面或主題…" /><kbd>/</kbd></div>
       <nav className="section-nav">
-        {!query && <button className={`nav-home ${view === 'home' ? 'active' : ''}`} onClick={() => navigate('home')}>明天 HR 準備總覽</button>}
+        {!query && <button className={`nav-home ${view === 'home' ? 'active' : ''}`} onClick={() => navigate('home')}>Apple 面試準備總覽</button>}
         {sections.map((section) => {
           const pages = filteredPages.filter((item) => item.section === section)
           if (!pages.length) return null
@@ -90,15 +90,15 @@ export default function AppleGuide() {
 
 function AppleHome({ onOpen }: { onOpen: (id: string) => void }) {
   return <div className="home-page">
-    <header><p>APPLE · SENIOR SITE RELIABILITY ENGINEER · SINGAPORE</p><h1>先過明天 HR，再補齊 SRE</h1><span>第一區是明天能直接說的回答；故事庫按 SRE relevance 重排；技術區對準 Apple Silicon datacenter fleet。</span></header>
-    <section className="official-focus"><strong>職缺核心</strong><div>{['Apple Silicon Fleet', 'Infrastructure Automation', 'Linux & Networking', 'Kubernetes', 'Provisioning', 'Monitoring & Alerting', 'On-call'].map((focus) => <span key={focus}>{focus}</span>)}</div></section>
+    <header><p>APPLE · SENIOR SITE RELIABILITY ENGINEER · SINGAPORE</p><h1>Hiring Manager · 30 分鐘說服主線</h1><span>先用 HM 區建立定位，再依追問進入兩個 deep dive；原 recruiter、story bank 與 technical preparation 都保留在後面。</span></header>
+    <section className="official-focus"><strong>這個 team 的核心</strong><div>{['Apple Silicon Fleet', 'Infrastructure Software', 'Platform Automation', 'Safe Lifecycle', 'Linux & Networking', 'Kubernetes', 'Provisioning', 'Reliability by Design'].map((focus) => <span key={focus}>{focus}</span>)}</div></section>
     <section className="interview-flow">
       {sections.map((section) => <div className="flow-section" key={section}>
         <h2>{appleSectionLabels[section]}</h2>
         {appleGuidePages.filter((page) => page.section === section).map((page) => <button key={page.id} onClick={() => onOpen(page.id)}><span>{page.step}</span><div><strong>{page.nav}</strong><small>{page.purpose}</small></div><b>{page.duration} →</b></button>)}
       </div>)}
     </section>
-    <aside className="tomorrow-rule"><strong>今晚的規則</strong><p>先練完 01–08，不要急著把技術區全部背完。Recruiter 要確認的是動機、經歷、基本 fit、誠實邊界與行政條件。技術準備從 T1 Incident Triage 開始，逐層補到 fleet system design。</p></aside>
+    <aside className="tomorrow-rule"><strong>HM 使用方式</strong><p>不要分享這個頁面；把它當成自己的回答導航。先講 HM1，自然接到 HM2。對方問 platform architecture 就進 HM3，問 automation 或 AI 就進 HM4。HM5 目前同時標出已知 production evidence 和仍需要補的真實案例。</p></aside>
   </div>
 }
 
