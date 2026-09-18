@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
-import commandReviewMarkdown from './content/commandParameterReview.md?raw'
+import type { TechnicalHandbook } from './technicalHandbooks'
 
 type ReviewSection = {
   number: string
@@ -10,7 +10,7 @@ type ReviewSection = {
   markdown: string
 }
 
-function parseReview(markdown: string) {
+function parseReview(markdown: string, handbookId: string) {
   const parts = markdown.split(/^##\s+/m)
   const introLines = parts[0].trim().split('\n')
   const title = introLines.shift()?.replace(/^#\s+/, '') ?? '常用指令與參數複習表'
@@ -24,7 +24,7 @@ function parseReview(markdown: string) {
     return {
       number,
       title: sectionTitle,
-      id: `command-section-${number}`,
+      id: `${handbookId}-section-${number}`,
       markdown: body.join('\n').trim(),
     }
   })
@@ -32,8 +32,8 @@ function parseReview(markdown: string) {
   return { title, intro, sections }
 }
 
-export default function CommandReview() {
-  const review = useMemo(() => parseReview(commandReviewMarkdown), [])
+export default function CommandReview({ handbook }: { handbook: TechnicalHandbook }) {
+  const review = useMemo(() => parseReview(handbook.markdown, handbook.id), [handbook])
   const [activeSection, setActiveSection] = useState(review.sections[0]?.id ?? '')
   const mainRef = useRef<HTMLElement>(null)
 
@@ -63,12 +63,12 @@ export default function CommandReview() {
   return (
     <div className="command-review-shell">
       <aside className="command-review-sidebar">
-        <a className="command-back" href="#">← Interview Prep</a>
+        <a className="command-back" href="#apple">← Apple Prep</a>
         <div className="command-sidebar-heading">
-          <span>SRE Review</span>
-          <strong>Commands</strong>
+          <span>Technical Handbook</span>
+          <strong>{handbook.shortTitle}</strong>
         </div>
-        <nav aria-label="Command handbook sections">
+        <nav aria-label={`${handbook.shortTitle} handbook sections`}>
           {review.sections.map((section) => (
             <button
               key={section.id}
@@ -84,7 +84,7 @@ export default function CommandReview() {
 
       <main className="command-review-main" ref={mainRef}>
         <div className="command-mobile-nav">
-          <a href="#">← Home</a>
+          <a href="#apple">← Apple</a>
           <select
             aria-label="Jump to a section"
             value={activeSection}
@@ -100,10 +100,24 @@ export default function CommandReview() {
 
         <article className="command-review-article">
           <header className="command-review-hero">
-            <p>SRE INTERVIEW · QUICK REFERENCE</p>
+            <p>{handbook.kicker}</p>
             <h1>{review.title}</h1>
             <div className="command-review-intro">
-              <ReactMarkdown remarkPlugins={[remarkGfm]}>{review.intro}</ReactMarkdown>
+              <ReactMarkdown
+                remarkPlugins={[remarkGfm]}
+                components={{
+                  a: ({ children, href, ...props }) => {
+                    const sectionNumber = href?.match(/^#(\d+)(?:-|$)/)?.[1]
+                    if (sectionNumber) {
+                      const sectionId = `${handbook.id}-section-${sectionNumber}`
+                      return <a {...props} href={`#${sectionId}`} onClick={(event) => { event.preventDefault(); goToSection(sectionId) }}>{children}</a>
+                    }
+                    return <a {...props} href={href} target="_blank" rel="noreferrer">{children}</a>
+                  },
+                }}
+              >
+                {review.intro}
+              </ReactMarkdown>
             </div>
           </header>
 
@@ -122,11 +136,14 @@ export default function CommandReview() {
                 <ReactMarkdown
                   remarkPlugins={[remarkGfm]}
                   components={{
-                    a: ({ children, ...props }) => (
-                      <a {...props} target="_blank" rel="noreferrer">
-                        {children}
-                      </a>
-                    ),
+                    a: ({ children, href, ...props }) => {
+                      const sectionNumber = href?.match(/^#(\d+)(?:-|$)/)?.[1]
+                      if (sectionNumber) {
+                        const sectionId = `${handbook.id}-section-${sectionNumber}`
+                        return <a {...props} href={`#${sectionId}`} onClick={(event) => { event.preventDefault(); goToSection(sectionId) }}>{children}</a>
+                      }
+                      return <a {...props} href={href} target="_blank" rel="noreferrer">{children}</a>
+                    },
                   }}
                 >
                   {section.markdown}

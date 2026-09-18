@@ -70,11 +70,6 @@ export default function LegacyTutor() {
             Apple SRE Guide
           </button>
 
-          <div className="nav-section-header">SRE Review</div>
-          <button className="nav-item nav-item-sub" onClick={() => { window.location.hash = 'commands' }}>
-            Commands &amp; Parameters
-          </button>
-
           {companies.length > 0 && (
             <>
               <div className="nav-section-header">Companies</div>
