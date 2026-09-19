@@ -20,6 +20,7 @@ export default function AppleGuide() {
   const [view, setView] = useState<View>(initialView)
   const [query, setQuery] = useState('')
   const [sidebarOpen, setSidebarOpen] = useState(false)
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(() => localStorage.getItem('apple-guide:sidebar-collapsed') === '1')
   const searchRef = useRef<HTMLInputElement>(null)
   const page = view === 'home' ? undefined : applePageById.get(view)
   const handbookId = view.startsWith('review/') ? view.slice('review/'.length) as TechnicalHandbookId : undefined
@@ -62,6 +63,12 @@ export default function AppleGuide() {
     navigate(`review/${id}`)
   }
 
+  function toggleSidebar() {
+    const next = !sidebarCollapsed
+    setSidebarCollapsed(next)
+    localStorage.setItem('apple-guide:sidebar-collapsed', next ? '1' : '0')
+  }
+
   function move(delta: number) {
     const base = pageIndex < 0 ? (delta > 0 ? -1 : appleGuidePages.length) : pageIndex
     const next = appleGuidePages[base + delta]
@@ -84,7 +91,7 @@ export default function AppleGuide() {
   return <div className="fde-guide apple-guide app-shell">
     <header className="mobile-header"><button onClick={() => setSidebarOpen(true)}>☰</button><strong>Apple SRE Prep</strong></header>
     {sidebarOpen && <button className="scrim" onClick={() => setSidebarOpen(false)} aria-label="Close menu" />}
-    <aside className={`sidebar ${sidebarOpen ? 'is-open' : ''}`}>
+    <aside className={`sidebar ${sidebarOpen ? 'is-open' : ''} ${sidebarCollapsed ? 'desktop-collapsed' : ''}`}>
       <button className="brand" onClick={() => navigate('home')}><strong>Apple SRE</strong><span>Hiring Manager · 30-minute conversation</span></button>
       <div className="search-wrap"><input ref={searchRef} value={query} onChange={(event) => setQuery(event.target.value)} placeholder="搜尋頁面或主題…" /><kbd>/</kbd></div>
       <nav className="section-nav">
@@ -105,7 +112,7 @@ export default function AppleGuide() {
       </nav>
     </aside>
     <main className="workspace">
-      <div className="topbar"><div className="guide-links"><button className="all-prep-link" onClick={() => { window.location.hash = '' }}>← 全部公司</button><button className="back-home" onClick={() => navigate('home')}>Apple 準備總覽</button></div>{!handbook && <div className="shortcuts"><span><kbd>K</kbd> 上一頁</span><span><kbd>J</kbd> 下一頁</span></div>}</div>
+      <div className="topbar"><div className="guide-links"><button className="desktop-sidebar-toggle" onClick={toggleSidebar} aria-label={sidebarCollapsed ? '展開 Apple 導覽' : '收起 Apple 導覽'} title={sidebarCollapsed ? '展開 Apple 導覽' : '收起 Apple 導覽'}><span>{sidebarCollapsed ? '☰' : '‹'}</span>{sidebarCollapsed ? '展開導覽' : '收起導覽'}</button><button className="all-prep-link" onClick={() => { window.location.hash = '' }}>← 全部公司</button><button className="back-home" onClick={() => navigate('home')}>Apple 準備總覽</button></div>{!handbook && <div className="shortcuts"><span><kbd>K</kbd> 上一頁</span><span><kbd>J</kbd> 下一頁</span></div>}</div>
       <div className="content-scroll">{handbook ? <CommandReview key={handbook.id} handbook={handbook} /> : page ? <AppleInterviewPage key={page.id} page={page} index={pageIndex} onMove={move} /> : <AppleHome onOpen={navigate} onOpenHandbook={navigateHandbook} />}</div>
     </main>
   </div>
