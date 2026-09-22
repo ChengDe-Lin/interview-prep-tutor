@@ -92,6 +92,38 @@ ip route get 10.20.30.77
 ip rule
 ```
 
+| 指令／參數 | 用途 |
+|---|---|
+| `ip -br addr` | `-br` 是 brief；`addr` 顯示 interface 的 addresses。先看 interface 是否 `UP`、拿到哪個 prefix。 |
+| `ip route` | 顯示目前 network namespace 的 routes；沒有帶 table 時通常看 main table。留意 prefix、`via` next hop、`dev` interface、`src` source address 與 metric。 |
+| `ip route get 10.20.30.77` | `get` 請 kernel 對單一 destination 做一次 route lookup；可再加 `from <source-ip>` 模擬不同 source。它不會真的送 packet。 |
+| `ip rule` | 顯示 policy-routing rules 與 priority；數字越小通常越早評估。它說明 lookup 會查哪些 routing tables。 |
+
+#### 示例輸出
+
+以下 IP、interface 與 table 都是示例。
+
+```text
+$ ip -br addr
+lo               UNKNOWN        127.0.0.1/8 ::1/128
+eth0             UP             10.20.30.70/26 fe80::20c:29ff:feaa:1001/64
+
+$ ip route
+default via 10.20.30.65 dev eth0 proto dhcp src 10.20.30.70 metric 100
+10.20.30.64/26 dev eth0 proto kernel scope link src 10.20.30.70
+
+$ ip route get 10.20.30.77
+10.20.30.77 dev eth0 src 10.20.30.70 uid 1000
+    cache
+
+$ ip rule
+0:      from all lookup local
+32766:  from all lookup main
+32767:  from all lookup default
+```
+
+讀法：`10.20.30.77` 命中 on-link `/26`，所以沒有 `via` gateway，從 `eth0` 使用 `10.20.30.70` 當 source。這只證明 kernel 的選路結果；沒有證明 ARP 成功、封包送達或遠端 service 正常。
+
 `ip route get` 可顯示 kernel 對該 destination 的 route lookup、source address 與 interface；它不會替你證明遠端 server 正常。不同 source、namespace、routing rules 可產生不同結果。
 
 Route lookup 與命令語意參見 [ip-route(8)](https://man7.org/linux/man-pages/man8/ip-route.8.html)。
@@ -104,6 +136,29 @@ IPv4 在適用的 link 上透過 ARP 找 IP 對應的 MAC。目的在本 subnet 
 ip neigh show
 ip -s link
 ```
+
+| 指令／參數 | 用途 |
+|---|---|
+| `ip neigh show` | 顯示本 network namespace 的 IPv4 ARP／IPv6 NDP neighbor entries。可加 `dev eth0` 只看某 interface。 |
+| `ip -s link` | `-s` 顯示 RX／TX counters；`link` 顯示 interfaces。重複 `-s -s` 在部分版本可顯示更多統計。 |
+
+#### 示例輸出
+
+```text
+$ ip neigh show dev eth0
+10.20.30.65 lladdr 00:11:22:33:44:55 REACHABLE
+10.20.30.88 lladdr 00:11:22:33:44:88 STALE
+10.20.30.99 FAILED
+
+$ ip -s link show dev eth0
+2: eth0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 state UP
+    RX: bytes  packets  errors  dropped  missed  mcast
+       8420192    18240       0        3       0    112
+    TX: bytes  packets  errors  dropped  carrier  collsns
+       2301180    12003       0        0        0        0
+```
+
+讀法：`REACHABLE` 表示近期確認過 neighbor；`STALE` 不是立即故障，只是需要再次確認；`FAILED` 表示解析未成功。RX drops／errors 增長值得追查，但單一累積值不能告訴你問題何時發生，應間隔取樣並對照流量。
 
 Neighbor INCOMPLETE／FAILED 指向 link／neighbor resolution 問題，可能是 VLAN、對端、interface 或配置；不應直接歸因 DNS。IPv6 使用 Neighbor Discovery，沒有 IPv4 那種 ARP broadcast；不要把 IPv6 當作只換長一點的地址。
 
@@ -154,6 +209,39 @@ dig +trace example.com
 cat /etc/resolv.conf
 ```
 
+| 指令／參數 | 用途 |
+|---|---|
+| `getent ahosts example.com` | `getent` 查 NSS database；`ahosts` 以 socket address 形式列出結果，會受 `/etc/nsswitch.conf`、`/etc/hosts` 等影響。 |
+| `dig example.com A`／`AAAA` | 第一個參數是 name，第二個是 record type；不指定 server 時使用系統設定的 resolver。 |
+| `dig @1.1.1.1 example.com A` | `@server` 指定要詢問的 DNS server；不代表 application 平常也用它。 |
+| `dig +tcp example.com A` | `+tcp` 強制 DNS over TCP，適合比較 UDP 正常但 TCP 53 被擋等差異。 |
+| `dig +trace example.com` | `+trace` 從 root referrals 逐層追到 authoritative answer；不是透過平常 recursive resolver 完成。 |
+| `cat /etc/resolv.conf` | 查看 `nameserver`、`search`、`options` 等 resolver 設定；在 systemd-resolved、container 或 pod 中可能只是 stub／產生檔。 |
+
+#### 示例輸出
+
+```text
+$ dig example.com A
+;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 24101
+;; flags: qr rd ra; QUERY: 1, ANSWER: 1, AUTHORITY: 0, ADDITIONAL: 1
+
+;; QUESTION SECTION:
+;example.com.             IN      A
+
+;; ANSWER SECTION:
+example.com.      300     IN      A       93.184.216.34
+
+;; Query time: 18 msec
+;; SERVER: 10.96.0.10#53(10.96.0.10) (UDP)
+
+$ getent ahosts example.com
+93.184.216.34  STREAM example.com
+93.184.216.34  DGRAM
+93.184.216.34  RAW
+```
+
+讀法：`status: NOERROR` 加上 ANSWER 才表示這次查到 A record；`300` 是這筆 answer 的 TTL；`SERVER` 告訴你實際詢問哪個 resolver 與 transport。若是 `NOERROR` 但 `ANSWER: 0`，不要說成 NXDOMAIN；若是 `SERVFAIL`，則是 resolver 無法完成解析。
+
 `getent` 走系統 name-service 配置，較接近部分 applications 的 lookup；`dig` 直接做 DNS 查詢，不完全重現 application 的 NSS、hosts file 或內建 cache 行為。指定公共 resolver 只適用能從該 resolver 解析的 public name；internal／split-horizon DNS 不該以公共查詢結果下結論。
 
 **情境：你筆電查得到，pod 查不到。** 從該 pod 查 resolver、search domains、DNS policy、到 DNS server 的 TCP／UDP 路徑，並對照同 node／其他 node 的 pods。筆電成功只排除部分 public authoritative 問題。
@@ -197,6 +285,35 @@ ss -ntp
 ss -s
 ss -tin
 ```
+
+| 參數 | 意義 |
+|---|---|
+| `-l` | 只看 listening sockets。 |
+| `-n` | 不解析 hostname 與 service name，直接顯示 numeric IP／port。 |
+| `-t` | 只看 TCP；可用 `-u` 看 UDP。 |
+| `-p` | 顯示擁有 socket 的 process；可能需要足夠權限。 |
+| `-s` | 顯示 socket summary，不是逐條 connection。 |
+| `-i` | 顯示 internal TCP information，例如 RTT、cwnd、retransmission。 |
+
+#### 示例輸出
+
+欄位會依 iproute2 版本與 terminal 寬度略有不同。
+
+```text
+$ ss -lntp
+State  Recv-Q Send-Q Local Address:Port Peer Address:Port Process
+LISTEN 0      4096         0.0.0.0:443       0.0.0.0:*   users:(("nginx",pid=812,fd=7))
+
+$ ss -ntp
+State Recv-Q Send-Q Local Address:Port   Peer Address:Port Process
+ESTAB 0      120    10.0.1.10:443       10.0.2.25:51842   users:(("nginx",pid=812,fd=12))
+
+$ ss -tin dst 10.0.2.25
+ESTAB 0 120 10.0.1.10:443 10.0.2.25:51842
+ cubic rto:204 rtt:3.2/0.8 cwnd:10 bytes_acked:18421 bytes_retrans:0
+```
+
+讀法：第一段證明 nginx 在所有本地 IPv4 interfaces 的 443 listen。第二段 `Send-Q 120` 表示仍有資料等待傳送／確認，但一次 snapshot 不足以判定卡住；應重複觀察。`rtt`、`cwnd` 與 retransmission 是該 TCP connection 的線索，不是整個 service 的統計。
 
 `-l` listening、`-n` numeric、`-t` TCP、`-p` process、`-i` internal TCP info。對 ESTABLISHED sockets，Recv-Q 可反映尚未被 application 讀走的資料，Send-Q 反映仍待傳送／確認的資料；LISTEN sockets 的 queue 欄位有不同意義，常用來看 pending connections 與 backlog。[ss(8)](https://man7.org/linux/man-pages/man8/ss.8.html)
 
@@ -250,6 +367,39 @@ TLS 1.3 一般新 handshake 可在一個 TLS round trip 完成相應建立流程
 openssl s_client -connect example.com:443 -servername example.com -verify_hostname example.com -verify_return_error </dev/null
 curl -v --connect-timeout 3 --max-time 10 https://example.com/
 ```
+
+| 指令／參數 | 用途 |
+|---|---|
+| `openssl s_client` | 建立 TLS client connection 並印出 handshake／certificate 資訊。 |
+| `-connect example.com:443` | 指定 TCP destination。 |
+| `-servername example.com` | 傳送 SNI，讓多站台 server 選對 certificate。 |
+| `-verify_hostname example.com` | 驗證 certificate 是否涵蓋此 hostname。 |
+| `-verify_return_error` | 驗證失敗時讓 command 以錯誤結束，而不是只把問題印出來。 |
+| `</dev/null` | 關閉互動輸入，完成 handshake 後不等待你繼續輸入 application data。 |
+| `curl -v` | 顯示 DNS／connect／TLS／request／response headers 等 verbose 訊息；主要寫到 stderr。 |
+| `--connect-timeout 3` | Connection phase 最多等待 3 秒，包含 name lookup 與建立所需的 protocol handshakes。 |
+| `--max-time 10` | 整個 operation 最多 10 秒；不是每個階段各 10 秒。 |
+
+#### 示例輸出節錄
+
+```text
+$ openssl s_client ...
+subject=CN = example.com
+issuer=C = US, O = Example CA, CN = Example Intermediate
+Verification: OK
+Verify return code: 0 (ok)
+
+$ curl -v --connect-timeout 3 --max-time 10 https://example.com/
+* Connected to example.com (93.184.216.34) port 443
+* SSL connection using TLSv1.3 / TLS_AES_256_GCM_SHA384
+*  subjectAltName: host "example.com" matched cert's "example.com"
+> GET / HTTP/1.1
+> Host: example.com
+< HTTP/1.1 200 OK
+< content-type: text/html
+```
+
+讀法：`Verify return code: 0` 或 curl 的 hostname match 只表示這次 client 使用的 trust settings 驗證成功；不代表 backend、另一台 client 或 LB 後方的 TLS 也相同。HTTP status 出現表示 TLS 已完成，但 `200` 仍不證明所有 downstream 都健康。
 
 OpenSSL 的 trust store、版本與 server chain 會影響驗證；要讀 verification result，不能只看印出了 certificate。TLS termination 在 LB 時，client-to-LB 與 LB-to-backend 是兩段獨立安全關係；backend 可是 HTTP 或另一條 TLS。
 
@@ -325,6 +475,41 @@ tracepath 192.0.2.10
 
 `192.0.2.10` 是文件示例地址，請換成你的授權練習 endpoint；以上不是保證可到達的真實服務。
 
+| 指令／參數 | 用途 |
+|---|---|
+| `ping -c 4 <ip>` | `-c 4` 發四次 probe 後停止。看 packet loss 與 RTT，但只測 ICMP echo path。 |
+| `traceroute <ip>` | 逐步增加 TTL，從沿途回覆推估 hops。Linux 預設 probe 類型可能與其他 OS 不同；需要貼近 HTTPS 時可用支援的 TCP mode。 |
+| `mtr -rw -c 10 <ip>` | `-r` 產生一次 report、`-w` 使用較寬欄位、`-c 10` 每個 hop 測十個 cycles。 |
+| `tracepath <ip>` | 顯示推估路徑，也會嘗試找 path MTU；Linux 上通常不需要 root。 |
+
+#### 示例輸出
+
+數字只用來示範欄位。
+
+```text
+$ ping -c 4 192.0.2.10
+64 bytes from 192.0.2.10: icmp_seq=1 ttl=57 time=12.4 ms
+64 bytes from 192.0.2.10: icmp_seq=2 ttl=57 time=12.8 ms
+--- 192.0.2.10 ping statistics ---
+4 packets transmitted, 4 received, 0% packet loss
+rtt min/avg/max/mdev = 12.1/12.5/12.8/0.3 ms
+
+$ mtr -rw -c 10 192.0.2.10
+HOST              Loss%  Snt  Last  Avg  Best  Wrst StDev
+gateway.local       0.0%   10   0.6  0.7   0.5   1.1   0.2
+198.51.100.1       60.0%   10   5.1  5.0   4.8   5.2   0.1
+192.0.2.10          0.0%   10  12.6 12.5  12.1  12.9   0.3
+
+$ tracepath 192.0.2.10
+ 1?: [LOCALHOST]                      pmtu 1500
+ 1:  gateway.local                     0.722ms
+ 2:  198.51.100.1                      5.021ms
+ 3:  192.0.2.10                       12.571ms reached
+     Resume: pmtu 1500 hops 3 back 3
+```
+
+讀法：上面的 MTR 中間 hop 顯示 60% loss，但目的地沒有 loss；較合理的第一個假設是該 router 限制對 probe 的回覆，不是它丟掉了 60% 的轉送流量。`tracepath` 的 `pmtu 1500` 是這次探測得到的 path MTU 線索，不表示所有路徑永遠都是 1500。
+
 Ping 通只證明某種 ICMP exchange 成功，不保證 TCP 443 或 application 正常。Ping 不通也可能只是 ICMP policy。Traceroute 利用逐步增加 TTL／Hop Limit 與沿途回覆推估路徑；probe 可用 UDP、ICMP、TCP，工具與選项不同。
 
 中間一跳 `* * *`，後面又有回覆，表示至少那些後續 probes 能往前走；該 router 可能限速／不回 control-plane messages。Mtr 中間 hop loss 高、後續 loss 不延續，不足以證明 forwarding 丟包。回程路徑也可能不相同，不能把某 hop 的 RTT 當該段 link 的單向 latency。
@@ -339,6 +524,26 @@ curl -sS -o /dev/null --connect-timeout 3 --max-time 10 \
   https://example.com/
 ```
 
+| 參數 | 用途 |
+|---|---|
+| `-sS` | `-s` 關閉 progress meter；搭配 `-S` 仍顯示 errors。 |
+| `-o /dev/null` | 不把 response body 印到 terminal；headers 與 timing 仍可另外輸出。 |
+| `--connect-timeout 3` | Connection phase 最多三秒，包含 name lookup 與建立所需的 protocol handshakes；不是整個 request deadline。 |
+| `--max-time 10` | 整個 curl operation 最多十秒。 |
+| `-w '<format>'` | 完成後依 format 印出 curl 收集的 timing variables。 |
+
+#### 示例輸出
+
+```text
+dns=0.010214
+connect=0.030841
+tls=0.081773
+ttfb=2.083412
+total=2.101904
+```
+
+讀法：這些多是從 request 起點累計，不應直接把每個數字當成獨立區段。本例可粗略算出 TCP 約 `0.0308 - 0.0102` 秒、TLS 約 `0.0818 - 0.0308` 秒，而 TLS 完成到第一個 response byte 約兩秒，因此下一步應查 server queue、handler 與 dependencies。
+
 這些時間多是從起點累計；在簡單、無 proxy／redirect／reuse 的例子中，可用差值粗略分段。TTFB 包含先前階段與 server 等待，**不是純 application CPU time**。若 connection reuse、redirect、proxy 等存在，需重新解释。[curl manual](https://curl.se/docs/manpage.html)
 
 **自編讀數：**DNS 0.01 s、connect 0.03 s、TLS 0.08 s、TTFB 2.08 s、total 2.10 s。主要延遲在完成 TLS 到收到第一個 response byte 的區間。接著查 server queue、handler、dependencies 與 trace；仍不能直接宣判 DB 慢。
@@ -352,7 +557,28 @@ sudo tcpdump -i any -nn -c 100 'tcp port 443 and host 192.0.2.10'
 sudo tcpdump -i any -nn -c 100 'udp port 53 or tcp port 53'
 ```
 
-`-i any` 選 Linux 的多 interfaces capture、`-nn` 不做 hostname／service-name resolution、`-c` 限制封包數。沒有匹配流量時可能持續等待，Ctrl-C 停止。從正確 host／namespace／interface 抓包，比背十個 flags 更重要。[tcpdump(8)](https://man7.org/linux/man-pages/man8/tcpdump.8.html)
+| 指令／參數 | 用途 |
+|---|---|
+| `sudo` | Packet capture 通常需要額外權限；只在你有授權的系統與流量上使用。 |
+| `-i any` | 在 Linux 的多個 interfaces 上 capture；若已知 interface，改用 `-i eth0` 可降低雜訊。 |
+| `-nn` | 不反查 hostnames，也不把 port 轉成 service names，避免額外 DNS 與誤讀。 |
+| `-c 100` | 收到 100 個符合條件的 packets 後停止。沒有匹配流量時仍可能一直等待。 |
+| `'tcp port 443 and host 192.0.2.10'` | BPF filter：只保留與該 host 有關、source 或 destination port 為 443 的 TCP packets。 |
+
+#### 示例輸出
+
+```text
+10:14:01.100001 IP 10.0.1.25.51842 > 192.0.2.10.443: Flags [S], seq 1000, win 64240, length 0
+10:14:01.112401 IP 192.0.2.10.443 > 10.0.1.25.51842: Flags [S.], seq 8000, ack 1001, win 65160, length 0
+10:14:01.112490 IP 10.0.1.25.51842 > 192.0.2.10.443: Flags [.], ack 8001, win 502, length 0
+
+10:14:04.200110 IP 10.0.1.25.53001 > 10.96.0.10.53: 24101+ A? example.com. (29)
+10:14:04.218301 IP 10.96.0.10.53 > 10.0.1.25.53001: 24101 1/0/0 A 93.184.216.34 (45)
+```
+
+讀法：`[S]`、`[S.]`、`[.]` 分別對應 SYN、SYN-ACK、ACK，支持 TCP handshake 在這個 capture point 上完成。DNS 例子的 query ID `24101` 與回覆相同，回覆含一筆 A answer。這仍不能證明 application handler 成功；也不能用單邊 capture 保證另一端實際看到了相同 packets。
+
+Ctrl-C 可提早停止。從正確 host／namespace／interface 抓包，比背十個 flags 更重要。[tcpdump(8)](https://man7.org/linux/man-pages/man8/tcpdump.8.html)
 
 | 觀察 | 可支持的判斷 | 不可跳到的結論 | 下一步 |
 |---|---|---|---|
@@ -402,6 +628,37 @@ kubectl describe pod my-pod
 kubectl get networkpolicy
 ```
 
+| 指令／參數 | 用途 |
+|---|---|
+| `kubectl get pods -o wide` | `-o wide` 多顯示 Pod IP、node 等欄位；`Running` 與 `Ready` 要分開看。 |
+| `kubectl get svc my-service -o yaml` | 查看 Service selector、`port`、`targetPort` 與 type。YAML 比預設表格保留更多設定。 |
+| `kubectl get endpointslices -l kubernetes.io/service-name=my-service` | `-l` 用 label selector 找該 Service 的 EndpointSlices；檢查 addresses 與 ready conditions。 |
+| `kubectl describe pod my-pod` | 顯示 Pod 詳細狀態與近期 Events，適合看 readiness failures、scheduling 與 image／container 問題。 |
+| `kubectl get networkpolicy` | 列出 namespace 內的 NetworkPolicies；object 存在不代表所用 CNI 一定有執行它。 |
+| `-n <namespace>` | 以上指令可加入 namespace；沒寫時使用目前 context 的預設 namespace。 |
+
+#### 示例輸出
+
+```text
+$ kubectl get pods -o wide
+NAME                    READY   STATUS    RESTARTS   IP            NODE
+api-6d9f8b7d8c-k4p2m    1/1     Running   0          10.244.2.17   worker-2
+
+$ kubectl get svc my-service -o yaml
+spec:
+  selector:
+    app: api
+  ports:
+  - port: 80
+    targetPort: 8080
+
+$ kubectl get endpointslices -l kubernetes.io/service-name=my-service
+NAME               ADDRESSTYPE   PORTS   ENDPOINTS      AGE
+my-service-x7k9m   IPv4          8080    10.244.2.17    4d
+```
+
+讀法：Service 80 會導向 selected endpoints 的 8080；EndpointSlice 至少列出一個 address。若 Service selector 寫錯，可能得到空 endpoints。Pod 顯示 `Running` 仍要看 `READY`、readiness probe 與實際 listener，不能直接宣告服務健康。
+
 名稱與 namespace 請換成實際環境。用故障 client 所在的 network context 比較：DNS name、Service IP、individual endpoint。讀 Service selector、port／targetPort、EndpointSlice addresses／conditions；只因 object 存在就停止排查是不夠的。[Debug Services](https://kubernetes.io/docs/tasks/debug/debug-application/debug-service/)
 
 ### 14.2 對照結果定位
@@ -444,6 +701,29 @@ curl -4 --max-time 10 https://example.com/
 curl -6 --max-time 10 https://example.com/
 ip -6 route
 ```
+
+| 指令／參數 | 用途 |
+|---|---|
+| `curl -4` | 只使用 IPv4 做 name resolution／connection。 |
+| `curl -6` | 只使用 IPv6；適合確認 dual-stack 問題是否只發生在其中一個 family。 |
+| `--max-time 10` | 限制整個 curl operation 十秒，避免壞路徑長時間等待。 |
+| `ip -6 route` | 只顯示 IPv6 routes；留意 connected prefix、default route、`via` 與 interface。 |
+
+#### 示例輸出
+
+```text
+$ ip -6 route
+2001:db8:10:20::/64 dev eth0 proto kernel metric 256
+fe80::/64 dev eth0 proto kernel metric 256
+default via fe80::1 dev eth0 metric 1024
+
+$ curl -6 -v --max-time 10 https://example.com/
+*   Trying [2001:db8::10]:443...
+* connect to 2001:db8::10 port 443 failed: Network is unreachable
+curl: (7) Failed to connect to example.com port 443
+```
+
+讀法：route table 例子有 global prefix、link-local 與 default route。curl 例子已取得 IPv6 address，但 connect 時回 `Network is unreachable`，方向偏向本機／namespace IPv6 route 或 connectivity，而不是 HTTP。若訊息是 `Could not resolve host`，才先回到 name resolution。
 
 失敗也可能只是練習環境沒有 IPv6 connectivity。IPv6 與 BGP 列 P2：能解釋主要機制與 failure symptoms 即可；若 recruiter 後續說是 network-specialist round，再加深。
 
@@ -497,6 +777,8 @@ HTTPServer(('127.0.0.1', 18080), Handler).serve_forever()
 PY
 ```
 
+`python3 -u -` 中，`-u` 讓 stdout／stderr 不經緩衝，方便立即看到 request log；最後的 `-` 表示從 standard input 讀程式。`<<'PY' ... PY` 是 shell heredoc，把中間的 Python code 傳給 standard input。
+
 Terminal B：
 
 ```bash
@@ -504,6 +786,8 @@ ss -lntp 'sport = :18080'
 curl -v http://127.0.0.1:18080/
 curl -v --connect-timeout 2 http://127.0.0.1:18081/
 ```
+
+`ss` 的 `'sport = :18080'` 是 filter expression，只看 local source port 18080；引號避免 shell 誤解。第一個 `curl -v` 會印出 connection 與 HTTP headers；第二個以 `--connect-timeout 2` 限制建立 connection 的等待。`Connection refused` 通常表示路徑到達某個 stack，但該 port 沒 listener 或被明確 reject；timeout 則表示在期限內沒有完成 connect，不能直接判定是哪一層丟棄。
 
 預期 18080 收到 response；18081 若無 listener，通常 connection refused。若該 port 已被其他程式使用，先換 port。只綁 loopback；完成後在 A 按 Ctrl-C。解釋 refused 與 timeout 的差異。
 
@@ -515,7 +799,7 @@ curl -v --connect-timeout 2 http://127.0.0.1:18081/
 sudo tcpdump -i lo -nn -A 'tcp port 18080'
 ```
 
-再 curl 一次，觀察 SYN、SYN-ACK、ACK、HTTP bytes 與 close。用 Ctrl-C 停 capture。Linux loopback interface 常叫 lo；其他 OS 名稱不同。這是自己的無敏感資訊實驗；不要據此預期 HTTPS 也顯示 plaintext。
+`-i lo` 只抓 loopback，`-nn` 保留 numeric address／port，`-A` 把 payload 以 ASCII 顯示。再 curl 一次，觀察 SYN、SYN-ACK、ACK、HTTP bytes 與 close。用 Ctrl-C 停 capture。Linux loopback interface 常叫 lo；其他 OS 名稱不同。這是自己的無敏感資訊實驗；不要據此預期 HTTPS 也顯示 plaintext。
 
 追問：為何 TCP segmentation 不一定對應你的每次 write？若 tcpdump 沒看到 packet，先確認哪個 namespace、interface 與 port？
 
