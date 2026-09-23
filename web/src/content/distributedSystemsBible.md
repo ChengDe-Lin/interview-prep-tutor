@@ -31,12 +31,13 @@ SRE · Production Engineering · Infrastructure Engineering
 - [20 Multi Region 與 Disaster Recovery](#20-multi-region-與-disaster-recovery)
 - [21 Distributed Job Scheduler 的完整骨架](#21-distributed-job-scheduler-的完整骨架)
 - [22 Observability Deployment 與 Automation](#22-observability-deployment-與-automation)
-- [23 六個跨系統案例](#23-六個跨系統案例)
-- [24 Trade Off 速查表](#24-trade-off-速查表)
-- [25 三個可驗證的推理實驗](#25-三個可驗證的推理實驗)
-- [26 三十題口試與答案要點](#26-三十題口試與答案要點)
-- [27 三場模擬面試與自評](#27-三場模擬面試與自評)
-- [28 最後複習與後續深讀](#28-最後複習與後續深讀)
+- [23 常見工具與什麼時候該拿出來](#23-常見工具與什麼時候該拿出來)
+- [24 六個跨系統案例](#24-六個跨系統案例)
+- [25 Trade Off 速查表](#25-trade-off-速查表)
+- [26 三個可驗證的推理實驗](#26-三個可驗證的推理實驗)
+- [27 三十題口試與答案要點](#27-三十題口試與答案要點)
+- [28 三場模擬面試與自評](#28-三場模擬面試與自評)
+- [29 最後複習與後續深讀](#29-最後複習與後續深讀)
 
 ## 1 如何讀以及本書依據
 
@@ -46,7 +47,7 @@ SRE · Production Engineering · Infrastructure Engineering
 |---|---|---|
 | 核心 | 2–10 | 解釋 failure、consistency、replication、quorum、consensus、fencing |
 | 實作 | 11–19 | 選 storage／transaction／messaging／cache／overload 機制 |
-| 系統判斷 | 20–28 | 做 multi-region recovery、scheduler、案例推理與驗收 |
+| 系統判斷 | 20–29 | 選擇工具、做 multi-region recovery、scheduler、案例推理與驗收 |
 
 可分成 8–12 個約一小時學習時段，再做實驗與口試。這是安排建議，真正進度看你能否自行解釋，不能只以閱讀速度判斷。
 
@@ -652,7 +653,129 @@ Kubernetes rollout 可 pause／觀察／回到既有 revision，但 Deployment r
 
 Idempotent automation 要能重跑並收斂到 desired state；partial execution 要有 checkpoint。對 stateful node，maintenance 前檢查 replica health、quorum、drain、fencing 與恢復 capacity；不能只用「API 成功」表示維護安全完成。
 
-## 23 六個跨系統案例
+## 23 常見工具與什麼時候該拿出來
+
+這章不是要你把所有產品塞進同一張 architecture diagram。面試時先講 requirement，再講工具：**資料是 authoritative 還是 derived？讀法是 point lookup、search 還是大範圍 aggregation？需要 replay、ordering、join、event time 還是 coordination？可以接受多少 stale、loss 與操作成本？**
+
+工具名稱只能代表一組可能的能力，不能自動證明設計可靠。提出工具後，至少再補一句它的 failure boundary、partition／ordering scope、durability 設定或 fallback。
+
+### 23.1 需求訊號與第一候選
+
+| 需求訊號 | 可以先考慮 | 第一個反問 |
+|---|---|---|
+| 極低 latency 的 shared hot state、TTL、counter、rate limit | Redis | 丟掉或短暫 stale 可以嗎？working set 放 RAM 的成本合理嗎？ |
+| 工作派送、routing、ack、retry、priority／DLQ | RabbitMQ | 工作完成後還需要長期 replay 或多組 consumer 重讀嗎？ |
+| Durable event log、replay、多個獨立 downstream、per-key ordering | Kafka | Ordering 要 per key 還是 global？retention 和 consumer lag 多大？ |
+| 大量歷史資料的 distributed scan、join、ETL、batch computation | Spark | 單機 SQL／warehouse 是否已足夠？結果需要多快？ |
+| Continuous stream、event time、window、large keyed state | Flink | 是否真的需要 stateful、低延遲且處理 out-of-order events？ |
+| Leader election、lease、membership、少量強一致 metadata | etcd／ZooKeeper | 這是 coordination metadata，還是大量 business data？ |
+| Transaction、constraint、join、ad-hoc query、authoritative OLTP | PostgreSQL | Scale 與 availability 是否真的超過 relational system 的邊界？ |
+| 巨量、固定 key access、scale-out、multi-region availability | Cassandra／DynamoDB | Access patterns 是否固定？partition key 會不會 hot？需要 join 嗎？ |
+| Full-text search、relevance、filters、facets | Elasticsearch／OpenSearch | Search index 可以 near-real-time 且從 source 重建嗎？ |
+| Event／log 的大範圍即時 aggregation | ClickHouse | 這是 OLAP scan，還是 point update 與 transaction？ |
+| 大量便宜的 files、history、batch／ML data | Object storage＋Delta／Iceberg | 誰管理 schema、small files、compaction 與 metadata？ |
+| Schedule、dependency、backfill 的 data DAG | Airflow | 這是 batch orchestration，還是 long-running business workflow？ |
+| 跨小時／數天且 failure 後要續跑的 business workflow | Temporal | Activities 是否 idempotent？外部 effect unknown 時怎麼處理？ |
+| Container placement、rollout、self-healing、resource isolation | Kubernetes | App state、database correctness 與 SLO 由誰負責？ |
+
+### 23.2 Redis：hot state，不只是「比較快的 DB」
+
+Redis 是以 memory 為主的 data-structure server，提供 strings、hashes、sets、sorted sets、streams 等 atomic operations，也能設定 TTL 與不同 persistence 策略。[Redis data types](https://redis.io/docs/latest/develop/data-types/) [Redis persistence](https://redis.io/docs/latest/operate/oss_and_stack/management/persistence/)
+
+**拿出來：** cache、session、短期 idempotency record、counter、leaderboard、rate limiter，或需要低 latency 原子資料結構時。主動交代 key scope、TTL、memory limit、eviction policy 和 source-of-truth fallback。
+
+**不要先拿：** 需要 complex joins、ad-hoc analytics、遠大於 memory 的資料，或不能接受 eviction／async replication data loss 的 authoritative ledger。Redis 有 persistence，不代表預設配置就等於 transactional database 的 durability 與 constraints。
+
+**追問準備：** cache cluster 掛掉會不會把 DB 打爆？Failover 後 client 如何重連？Hot key 怎麼處理？RDB、AOF、replication、backup 各保護哪一種 failure？
+
+### 23.3 Kafka 與 RabbitMQ：durable log 還是 work queue
+
+| 問題 | Kafka | RabbitMQ |
+|---|---|---|
+| 核心模型 | Partitioned append-only log，consumer 以 offset 讀取 | Exchange 把 message route 到 queue，consumer ack 後 queue 前進 |
+| 自然用途 | Event backbone、CDC、audit、replay、多個 downstream views | Background jobs、command dispatch、routing、retry／DLQ、work distribution |
+| Ordering | 主要在 partition 內；同 key 可進同 partition | 受 queue、multi-consumer、redelivery、priority 影響，不能只說 global FIFO |
+| 多組 consumer | 不同 groups 可各自讀 topic；同 group 分攤 partitions | Pub/sub 用 exchange 綁多個 queues；同 queue consumers 分攤工作 |
+| 歷史重讀 | Retention 內調整 offset replay 是核心能力 | 一般 queue 目標是清空；RabbitMQ Streams 才是 non-destructive log model |
+| 主要成本 | Partition、rebalance、lag、retention、hot partition、schema | Queue topology、ack、poison message、memory／disk、routing complexity |
+
+Kafka 適合「事件需要留下來，未來可能有新 consumer 重算」；RabbitMQ 適合「把一份工作可靠地交給某個 worker，控制 routing、ack 和 retry」。兩者都有交集，所以從 semantics 而不是品牌選擇。[Kafka consumer groups](https://kafka.apache.org/41/javadoc/org/apache/kafka/clients/consumer/KafkaConsumer.html) [RabbitMQ Streams](https://www.rabbitmq.com/docs/streams)
+
+不要說 Kafka 天生提供任意範圍的 exactly once；外部 DB／API 仍需 outbox、idempotency 或 reconciliation。也不要再說現代 Kafka 一定需要 ZooKeeper：Kafka 4.x 已移除 ZooKeeper mode，control plane 改用 KRaft。[Kafka 4.0](https://kafka.apache.org/blog/2025/03/18/apache-kafka-4.0.0-release-announcement/)
+
+### 23.4 Spark 與 Flink：distributed processing engine
+
+Spark 適合在 cluster 上對大量 bounded data 做 scan、join、aggregation、ETL 與 ML；Structured Streaming 讓 batch 和 streaming 使用相近的 DataFrame／Dataset model。[Spark Structured Streaming](https://spark.apache.org/streaming/)
+
+Flink 從 continuous dataflow 出發，強項是 stateful stream processing、event time、watermark、window、keyed state、checkpoint 與 savepoint；適合 fraud detection、sessionization、即時 feature 和長時間 aggregation。[Flink overview](https://nightlies.apache.org/flink/flink-docs-stable/docs/learn-flink/overview/)
+
+| 選擇問題 | 偏 Spark | 偏 Flink |
+|---|---|---|
+| 主 workload | Large batch、historical recompute、ETL／SQL／ML | Continuous、event-driven、stateful streaming |
+| 時間要求 | 分鐘級或可接受 trigger／micro-batch style | 低延遲 continuous processing，event time 很重要 |
+| State | Job 中間資料與 structured streaming state | Keyed operator state 是核心，可 checkpoint／rescale |
+| 團隊成本 | 已有 Spark／lakehouse／SQL pipelines | 要維運 state backend、checkpoint、watermark、savepoint |
+
+**兩個都不要急著拿：** 幾 GB 可由單機 SQL／Python 完成、request path 要同步回應、或只是簡單轉發 message。Distributed compute 會帶來 shuffle、serialization、checkpoint、cluster scheduling 和 small-file 成本。
+
+### 23.5 ZooKeeper 與 etcd：協調少量 metadata
+
+ZooKeeper 與 etcd 用於 distributed coordination，不是一般 business row storage。常見需求是 leader election、membership、configuration、lease／lock、watch 和 small metadata。ZooKeeper 使用 hierarchical znodes、ephemeral nodes 與 watches；etcd 提供 ordered revisions、MVCC、watch、lease 和 election。[ZooKeeper](https://zookeeper.apache.org/) [Why etcd](https://etcd.io/docs/v3.2/learning/why/)
+
+**拿出來：** control plane 需要多個 processes 對「誰是 leader」「desired config 是什麼」「哪個 owner 的 lease 還有效」取得共同 view。
+
+**不要拿：** 大量 payload、高吞吐 event history、search、analytics 或 user profile。etcd 的單一 consistent replication group 適合少量 ordered metadata；ZooKeeper local reads 也可能 stale，不能把每次 read 都描述成 linearizable。
+
+Lock／election 涉及 session expiry、watch loss、reconnect、stale owner 與 fencing，應優先使用成熟 recipe。即使有 coordination service，下游 protected resource 仍應驗證 fencing token。
+
+### 23.6 PostgreSQL、Cassandra 與 DynamoDB
+
+**PostgreSQL 常是第一個 baseline。** 資料關係明確、需要 transaction、unique／foreign-key constraints、join、secondary indexes 與 ad-hoc query 時，relational model 最直接。不要因為題目寫 distributed 就立刻放棄 SQL；先估 scale、read replicas、partitioning、connection limits 和 failover。[PostgreSQL transactions](https://www.postgresql.org/docs/current/tutorial-transactions.html)
+
+**Cassandra** 適合超大 partitioned datasets、已知 query patterns、scale-out 和 multi-primary／multi-datacenter availability。Data model 由 query 反推；它不提供 distributed joins、foreign keys 或一般 cross-partition transactions。[Cassandra architecture](https://cassandra.apache.org/doc/stable/cassandra/architecture/overview.html)
+
+**DynamoDB** 是 managed key-value／document 選擇，partition key 決定 placement，sort key 組織同 partition records；適合 access patterns 已知，希望 provider 管理 scaling／replication 的場景。[DynamoDB core components](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/HowItWorks.CoreComponents.html)
+
+| 問題 | PostgreSQL | Cassandra／DynamoDB |
+|---|---|---|
+| Query | Joins、filters、transactions，可逐步演進 | 先知道 access pattern，以 partition／sort key 命中 |
+| Invariant | DB constraints 與 transactions | 單 item／partition atomicity 加 application workflow |
+| Scale | Scale up、replica、partition／shard、managed HA | Partition-first scale out；capacity 與 hot key 是核心 |
+| 風險 | Connection／lock contention、replica lag、failover | Hot／large partition、資料重複、cross-key coordination |
+
+### 23.7 Search、OLAP 與 data lake
+
+**Elasticsearch／OpenSearch：** 需要 full-text relevance、inverted index、facets、filters、log/search experience 時使用。Index 是 near real time；通常保留 authoritative DB／object store，以 outbox／CDC 更新，並準備 replay rebuild。[Elasticsearch near-real-time search](https://www.elastic.co/docs/manage-data/data-store/near-real-time-search)
+
+**ClickHouse：** column-oriented OLAP database，適合 append-heavy events、logs、metrics，以及掃大量 rows、聚合少數 columns 的 dashboard／analytics。不要拿它取代每筆都需要 constraint、point update 和 row transaction 的 OLTP database。[ClickHouse columnar guidance](https://clickhouse.com/resources/engineering/when-to-use-columnar-database)
+
+**Object storage＋Parquet＋Delta／Iceberg：** 適合便宜保存大量 historical data，供 Spark、Flink、Trino、warehouse 或 ML 使用。Table format 提供 metadata、schema evolution、snapshot／transaction；仍要治理 small files、compaction、partition layout、catalog 和 retention。[Delta Lake](https://docs.delta.io/)
+
+簡單記：**search engine 回答「哪些文件相關」；OLAP 回答「大量事件聚合後是什麼」；data lake 回答「如何便宜保存與重算歷史資料」。** 它們通常是 derived views，不是任意互相替代的 source of truth。
+
+### 23.8 Airflow、Temporal 與 Kubernetes
+
+| 工具 | 管理對象 | 適合 | 不替你處理 |
+|---|---|---|---|
+| Airflow | DAG、task、schedule、dependency | ETL、報表、ML pipeline、backfill、batch | 低 latency request、每個 event 的即時處理 |
+| Temporal | Durable workflow history、workflow state、activity | 長時間 order／payment／approval、failure 後續跑 | 外部 API 原子性；side effect 仍需 idempotency |
+| Kubernetes | Pod desired state、placement、controller | Container rollout、self-healing、resource policy | Business workflow、exactly once、DB consistency |
+
+Airflow 編排 data tasks；Temporal 讓 application workflow 依 durable history 恢復；Kubernetes 讓 containers 維持 desired state。三者可以一起使用，但解決不同層。[Airflow](https://airflow.apache.org/docs/apache-airflow/stable/core-concepts/overview.html) [Temporal](https://docs.temporal.io/) [Kubernetes workloads](https://kubernetes.io/docs/concepts/workloads/)
+
+### 23.9 怎麼組合，而不是堆產品
+
+**Checkout：** PostgreSQL 保 orders／payments invariant；outbox 將 events 送 Kafka；Redis cache hot catalog；Elasticsearch 是 product search view。Scale 不大時，先用 PostgreSQL＋background worker，不必一次上四套 systems。
+
+**即時 analytics：** Kafka 保存 events；Flink 做 event-time aggregation；raw data 進 object storage＋Delta；Spark 做 historical backfill；ClickHouse 服務 dashboards。每層要有 schema evolution、checkpoint、lag 與 replay plan。
+
+**Platform control plane：** etcd 保存少量 desired state／lease；Kubernetes controllers reconcile workloads；business data 另選 PostgreSQL／其他 storage。不要把 etcd 當 user-data DB，也不要把 Kubernetes API 當 workflow engine。
+
+**英文口試框架**
+
+> I would not choose the product first. I would start with the access pattern and the guarantee we need. If we need a replayable event history with several independent consumers, Kafka is a reasonable candidate. If we only need to distribute short-lived work with routing and acknowledgements, RabbitMQ may be simpler. I would then discuss ordering scope, retention, failure recovery, and operational cost before making the choice.
+
+## 24 六個跨系統案例
 
 ### A Cache failover 後出現舊值
 
@@ -678,7 +801,7 @@ HTTP success 不等於 data correctness。比對來源 region、replication offs
 
 先分「保護服務容量」與「業務／安全硬限制」。一般 public read 可用 conservative local fallback 保住可用性；登入保護、付費 quota 或稀缺資源可能需更保守。Fail-open／fail-closed 不是全系統單一開關。監控 fallback 啟用、允許流量與 downstream saturation，逐步恢復 central policy。
 
-## 24 Trade Off 速查表
+## 25 Trade Off 速查表
 
 | 決策 | 選左邊時換得 | 付出的成本 | 何時改方向 |
 |---|---|---|---|
@@ -697,7 +820,7 @@ HTTP success 不等於 data correctness。比對來源 region、replication offs
 
 這張表不能取代題目的 invariant。面試回答不要「每次都 availability first」；應說這個 operation 若回錯或丟資料會怎樣，是否能補償。
 
-## 25 三個可驗證的推理實驗
+## 26 三個可驗證的推理實驗
 
 ### Lab 1 Quorum set 交集
 
@@ -752,7 +875,7 @@ PY
 
 預期 True、False、new result。這是單 thread 教學模型；production 的檢查與 write 必須由 protected resource 原子完成，token 發行也必須安全。相同 token 的重複 business operations 不會被這個模型去重；fencing 不等於 idempotency。
 
-## 26 三十題口試與答案要點
+## 27 三十題口試與答案要點
 
 每題先說主張，再說 failure case。每題 0–3 分：0 錯／答不出；1 定義；2 原理＋例子；3 限制＋追問。以下是自編評分，不是任何公司的標準。
 
@@ -789,9 +912,9 @@ PY
 | 29 | multi-region failover 第一步只改 DNS 嗎 | authority／fencing／RPO／capacity 全要看 |
 | 30 | job scheduler 如何不漏不亂做 | durable occurrence、dispatch recovery、dedup／fencing／reconcile |
 
-建議門檻：72/90；1、6、9、11、12、16、17、24、25、29 不得低於 2。再完成第 27 章至少兩場 mock，且能因新證據修改設計，才算達到本書的面試 readiness。
+建議門檻：72/90；1、6、9、11、12、16、17、24、25、29 不得低於 2。再完成第 28 章至少兩場 mock，且能因新證據修改設計，才算達到本書的面試 readiness。
 
-## 27 三場模擬面試與自評
+## 28 三場模擬面試與自評
 
 ### Mock A 一致性與故障 25 分鐘
 
@@ -817,7 +940,7 @@ PY
 
 填空是練習用，不必每題逐字背。能自然說明自己的選擇，比把所有術語塞進一句話更重要。
 
-## 28 最後複習與後續深讀
+## 29 最後複習與後續深讀
 
 ### 十五個不可混淆的句子
 
