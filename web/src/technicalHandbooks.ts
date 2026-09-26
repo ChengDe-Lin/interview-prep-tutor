@@ -2,8 +2,9 @@ import osMarkdown from './content/osInterviewHandbook.md?raw'
 import networkMarkdown from './content/networkInterviewHandbook.md?raw'
 import distributedMarkdown from './content/distributedSystemsBible.md?raw'
 import commandsMarkdown from './content/commandParameterReview.md?raw'
+import osNetworkDeepDivesMarkdown from './content/osNetwork23StudyGuides.md?raw'
 
-export type TechnicalHandbookId = 'commands' | 'os' | 'network' | 'distributed-systems'
+export type TechnicalHandbookId = 'commands' | 'os' | 'network' | 'distributed-systems' | 'os-network-deep-dives'
 
 export type TechnicalHandbook = {
   id: TechnicalHandbookId
@@ -51,6 +52,15 @@ export const technicalHandbooks: TechnicalHandbook[] = [
     description: 'Consistency、replication、consensus、messaging、retries 與 system design。',
     kicker: 'APPLE SRE · TECHNICAL HANDBOOK',
     markdown: distributedMarkdown,
+  },
+  {
+    id: 'os-network-deep-dives',
+    code: 'T5',
+    nav: 'OS & Network Deep Dives',
+    shortTitle: 'OS & Network Deep Dives',
+    description: '23 個 OS、network、fleet、security、Kubernetes、SLO 與 cloud 的深度複習主題。',
+    kicker: 'APPLE SRE · DEEP-DIVE STUDY GUIDES',
+    markdown: osNetworkDeepDivesMarkdown,
   },
 ]
 
